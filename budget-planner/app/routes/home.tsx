@@ -6,7 +6,7 @@ import TransactionTable from "../components/transactions-table";
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "Budget Planner" },
-    { name: "description", content: "Welcome to Budget Planner BITCH!" },
+    { name: "description", content: "Budget Planner babyYYy!!" },
   ];
 }
 

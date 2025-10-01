@@ -22,9 +22,9 @@ export default function TransactionsTable({
       <TableCaption>A list of your recent expenses.</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Expense</TableHead>
-          <TableHead>Category</TableHead>
           <TableHead>Date</TableHead>
+          <TableHead>Name</TableHead>
+          <TableHead>Category</TableHead>
           <TableHead className="text-right">Amount</TableHead>
         </TableRow>
       </TableHeader>
@@ -33,9 +33,9 @@ export default function TransactionsTable({
           .filter((transaction) => transaction.is_expense)
           .map((transaction) => (
             <TableRow key={transaction.id}>
-              <TableCell className="font-medium">{transaction.name}</TableCell>
+              <TableCell className="font-medium">{transaction.transaction_date}</TableCell>
+              <TableCell>{transaction.name}</TableCell>
               <TableCell>{transaction.category}</TableCell>
-              <TableCell>{transaction.transaction_date}</TableCell>
               <TableCell className="text-right">{transaction.amount}</TableCell>
             </TableRow>
           ))}
