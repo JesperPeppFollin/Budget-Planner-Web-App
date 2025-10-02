@@ -5,12 +5,15 @@ import TransactionsPieChart from "../components/transactions-pie-chart";
 import TransactionTable from "../components/transactions-table";
 
 export default function DashboardTab({className, ...transactionData}: {
-transactions: any[];className?: string;}) {
+  transactions: any[];
+  className?: string;
+}) {
+
   return (
     <div>
       <div className="w-full flex flex-row justify-center gap-4">
         <TrendCard title="income and expenses" amount={43} />
-        <BudgetCard amount={90} budget={100} />
+        <BudgetCard amount={10} budget={100} />
         <InfoCard title="Transactions" amount={50} />
       </div>
       <div className="flex flex-row justify-center items-center gap-8">

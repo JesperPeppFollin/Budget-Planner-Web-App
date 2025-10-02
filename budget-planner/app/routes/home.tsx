@@ -1,5 +1,5 @@
 import type { Route } from "./+types/home";
-import { useTransactionData } from "../backend/data-handler";
+import useTransactionData from "../backend/data-handler";
 import {
   Tabs,
   TabsContent,
@@ -35,8 +35,7 @@ export default function Home() {
       <TabsContent value="add transaction">
         <div className="flex justify-center">
           <AddTransactionTab
-            transactions={transactionData.transactions}
-            addTransaction={transactionData.addTransaction}
+            transactionData={transactionData}
           />
         </div>
       </TabsContent>
@@ -47,7 +46,7 @@ export default function Home() {
       </TabsContent>
       <TabsContent value="setBudget">
         <div className="flex justify-center">
-          <SetBudgetTab />
+          <SetBudgetTab transactionData={transactionData} />
         </div>
       </TabsContent>
     </Tabs>

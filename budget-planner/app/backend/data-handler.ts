@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import supabase from "./supabase-client";
-import { toast } from "sonner";
 
 export interface Transaction {
   id: string;
@@ -14,11 +13,15 @@ export interface Transaction {
 
 export type TransactionDataType = ReturnType<typeof useTransactionData>;
 
-export function useTransactionData() {
+
+export default function useTransactionData() {
+
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [budgets, setBudgets] = useState<{ [key: number]: number }>({});
 
   useEffect(() => {
     fetchTransactionList();
+    fetchBudgets();
   }, []);
 
   const fetchTransactionList = async () => {
@@ -36,10 +39,40 @@ export function useTransactionData() {
       console.log("Error adding transaction", "error", error, "data", data);
     } else {
       setTransactions((prev) => [...prev, ...data]);
-      toast.success("Transaction added!");
     }
   };
 
-  return { transactions, addTransaction };
+  const fetchBudgets = async () => {
+    const { data, error } = await supabase.from("budget").select("*");
+    if (error) {
+      console.log("Error fetching budgets", error);
+    } else {
+      // Transform array to object format { budget_id: amount }
+      const budgetObject: { [key: number]: number } = {};
+      data?.forEach(budget => {
+        budgetObject[budget.budget_id] = budget.amount;
+      });
+      setBudgets(budgetObject);
+    }
+  };  
+
+  const addBudgets = async (allBudgets: { [key: number]: number }) => {
+    // Update all budgets in one loop using budget_id
+    for (const [budget_id, amount] of Object.entries(allBudgets)) {
+      await supabase
+        .from("budget")
+        .update({ amount: amount })
+        .eq("budget_id", Number(budget_id))
+    }
+  };
+  // no error handling, code and explode🙏🙏
+
+  return {
+    transactions,
+    budgets,
+    addTransaction,
+    addBudgets,
+    fetchBudgets
+  };
 
 }

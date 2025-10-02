@@ -22,55 +22,55 @@ import { categories_expenses } from "../backend/categories"
 export const description = "A pie chart with a custom label"
 
 const chartData = [
-  { category: categories_expenses[0], amount: 275, fill: "var(--color-chart-1)" },
-  { category: categories_expenses[1], amount: 200, fill: "var(--color-chart-2)" },
-  { category: categories_expenses[2], amount: 187, fill: "var(--color-chart-3)" },
-  { category: categories_expenses[3], amount: 173, fill: "var(--color-chart-4)" },
-  { category: categories_expenses[4], amount: 90, fill: "var(--color-chart-5)" },
-  { category: categories_expenses[5], amount: 90, fill: "var(--color-chart-6)" },
-  { category: categories_expenses[6], amount: 90, fill: "var(--color-chart-7)" },
-  { category: categories_expenses[7], amount: 90, fill: "var(--color-chart-8)" },
-  { category: categories_expenses[8], amount: 90, fill: "var(--color-chart-9)" },
+  { category: categories_expenses[0].name, amount: 275, fill: "var(--color-chart-1)" },
+  { category: categories_expenses[1].name, amount: 200, fill: "var(--color-chart-2)" },
+  { category: categories_expenses[2].name, amount: 187, fill: "var(--color-chart-3)" },
+  { category: categories_expenses[3].name, amount: 173, fill: "var(--color-chart-4)" },
+  { category: categories_expenses[4].name, amount: 90, fill: "var(--color-chart-5)" },
+  { category: categories_expenses[5].name, amount: 90, fill: "var(--color-chart-6)" },
+  { category: categories_expenses[6].name, amount: 90, fill: "var(--color-chart-7)" },
+  { category: categories_expenses[7].name, amount: 90, fill: "var(--color-chart-8)" },
+  { category: categories_expenses[8].name, amount: 90, fill: "var(--color-chart-9)" },
 ]
 
 const chartConfig = {
   categories: {
     label: "Categories",
   },
-  [categories_expenses[0]]: {
-    label: categories_expenses[0],
+  [categories_expenses[0].name]: {
+    label: categories_expenses[0].name,
     color: "var(--chart-1)",
   },
-  [categories_expenses[1]]: {
-    label: categories_expenses[1],
+  [categories_expenses[1].name]: {
+    label: categories_expenses[1].name,
     color: "var(--chart-2)",
   },
-  [categories_expenses[2]]: {
-    label: categories_expenses[2],
+  [categories_expenses[2].name]: {
+    label: categories_expenses[2].name,
     color: "var(--chart-3)",
   },
-  [categories_expenses[3]]: {
-    label: categories_expenses[3],
+  [categories_expenses[3].name]: {
+    label: categories_expenses[3].name,
     color: "var(--chart-4)",
   },
-  [categories_expenses[4]]: {
-    label: categories_expenses[4],
+  [categories_expenses[4].name]: {
+    label: categories_expenses[4].name,
     color: "var(--chart-5)",
   },
-  [categories_expenses[5]]: {
-    label: categories_expenses[5],
+  [categories_expenses[5].name]: {
+    label: categories_expenses[5].name,
     color: "var(--chart-6)",
   },
-  [categories_expenses[6]]: {
-    label: categories_expenses[6],
+  [categories_expenses[6].name]: {
+    label: categories_expenses[6].name,
     color: "var(--chart-7)",
   },
-  [categories_expenses[7]]: {
-    label: categories_expenses[7],
+  [categories_expenses[7].name]: {
+    label: categories_expenses[7].name,
     color: "var(--chart-8)",
   },
-  [categories_expenses[8]]: {
-    label: categories_expenses[8],
+  [categories_expenses[8].name]: {
+    label: categories_expenses[8].name,
     color: "var(--chart-9)",
   },
 } satisfies ChartConfig

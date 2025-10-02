@@ -20,7 +20,13 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { TransactionDataType } from "~/backend/data-handler";
 
-export default function AddTransactionForm({ className, ...transactionData }: TransactionDataType & { className?: string }) {
+export default function AddTransactionForm({ 
+  transactionData, 
+  className 
+}: { 
+  transactionData: TransactionDataType; 
+  className?: string; 
+}) {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [transactionDate, setTransactionDate] = useState("");

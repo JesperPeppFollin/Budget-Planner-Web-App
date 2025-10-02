@@ -1,21 +1,48 @@
-import { useState } from "react";
-import { Card } from "../components/ui/card";
+import { useEffect, useRef, useState } from "react";
+import { Card, CardFooter } from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Wallet, TrendingUp, TrendingDown } from "lucide-react";
 import { categories_expenses } from "../backend/categories";
+import { Button } from "~/components/ui/button";
+import type { TransactionDataType } from "~/backend/data-handler";
 
-const handleBudgetChange = (categoryId: number, value: string) => {
-  // Handle budget change logic here
-  console.log(`Category ID: ${categoryId}, New Budget: ${value}`);
-};
+export default function SetBudgetTab({ transactionData }: {transactionData: TransactionDataType;}) { 
+  const [budgets, setBudgets] = useState<{ [key: number]: number }>({});
+  const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-// const totalBudget = categories_expenses.reduce(
-//   (sum, cat) => sum + (budgets[cat.id] || 0),
-//   0
-// );
+  const handleBudgetChange = (categoryId: number, value: string) => {
+    setBudgets((prev) => ({
+      ...prev,
+      [categoryId]: Number(value),
+    }));
+  };
 
-export default function SetBudgetTab() {
+  const handleSubmitBudget = () => {
+    const totalBudget = Object.values(budgets).reduce((a, b) => a + b, 0);
+    
+    // Combine individual budgets with total budget (budget_id: 10)
+    const allBudgets = {
+      ...budgets,
+      10: totalBudget  // Add total as budget_id 10
+    };
+    
+    transactionData.addBudgets(allBudgets);
+  };
+
+  const goToNextField = (e: React.KeyboardEvent, idx: number) => {
+    if (e.key === "Enter" && inputRefs.current[idx + 1]) {
+      inputRefs.current[idx + 1]?.focus();
+    }
+  };
+
+  const totalBudget = Object.values(budgets).reduce((a, b) => a + b, 0);
+
+  // useEffect(() => {
+  //   console.log(Object.values(budgets).reduce((a, b) => a + b, 0));
+  // }, [budgets]);
+  // använd för att testa att budgets uppdateras korrekt
+
   return (
     <div className="w-[700px]">
       <Card className="p-6">
@@ -24,7 +51,7 @@ export default function SetBudgetTab() {
           Expense Budgets
         </h3>
         <div className="grid gap-4 md:grid-cols-2">
-          {categories_expenses.map((category) => (
+          {categories_expenses.map((category, idx) => (
             <div key={category.id} className="space-y-2">
               <Label
                 htmlFor={`budget-${category.id}`}
@@ -44,18 +71,31 @@ export default function SetBudgetTab() {
                   id={`budget-${category.id}`}
                   type="number"
                   min="0"
-                  step="0.01"
-                //   value={budgets[category.id] || 0}
-                  onChange={(e) =>
+                  step="1"
+                  defaultValue={budgets[category.id] || ""}
+                  onBlur={(e) =>
                     handleBudgetChange(category.id, e.target.value)
                   }
+                  onKeyDown={(e) => goToNextField(e, idx)}
                   className="pl-7"
                   placeholder="0.00"
+                  ref={(el) => {
+                    inputRefs.current[idx] = el;
+                  }}
                 />
               </div>
             </div>
           ))}
         </div>
+        <CardFooter className="mt-6 flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Wallet className="h-4 w-4" />
+            Total Monthly Budget: ${totalBudget}
+          </div>
+          <Button variant="default" onClick={handleSubmitBudget}>
+            Save Budgets
+          </Button>
+        </CardFooter>
       </Card>
     </div>
   );
