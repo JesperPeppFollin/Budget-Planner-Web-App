@@ -1,13 +1,15 @@
 import type { Route } from "./+types/home";
 import { useTransactionData } from "../backend/data-handler";
-import AddTransaction from "../tabs/add-transaction";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "../components/ui/tabs";
-import Dashboard from "../tabs/dashboard";
+import AddTransactionTab from "../tabs/add-transaction-tab";
+import TransactionsTab from "../tabs/transactions-tab";
+import DashboardTab from "../tabs/dashboard-tab";
+import SetBudgetTab from "../tabs/set-budget-tab";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -23,17 +25,29 @@ export default function Home() {
     <Tabs defaultValue="dashboard">
       <TabsList>
         <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+        <TabsTrigger value="transactions">Transactions</TabsTrigger>
         <TabsTrigger value="add transaction">Add transaction</TabsTrigger>
+        <TabsTrigger value="setBudget">Set Budget</TabsTrigger>
       </TabsList>
       <TabsContent value="dashboard">
-        <Dashboard transactions={transactionData.transactions} />
+        <DashboardTab transactions={transactionData.transactions} />
       </TabsContent>
       <TabsContent value="add transaction">
         <div className="flex justify-center">
-          <AddTransaction
+          <AddTransactionTab
             transactions={transactionData.transactions}
             addTransaction={transactionData.addTransaction}
           />
+        </div>
+      </TabsContent>
+      <TabsContent value="transactions">
+        <div className="flex justify-center">
+          <TransactionsTab transactions={transactionData.transactions} />
+        </div>
+      </TabsContent>
+      <TabsContent value="setBudget">
+        <div className="flex justify-center">
+          <SetBudgetTab />
         </div>
       </TabsContent>
     </Tabs>

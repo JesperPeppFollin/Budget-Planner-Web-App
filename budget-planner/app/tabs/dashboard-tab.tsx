@@ -4,13 +4,8 @@ import InfoCard from "../components/summary cards/info-card";
 import TransactionsPieChart from "../components/transactions-pie-chart";
 import TransactionTable from "../components/transactions-table";
 
-export default function Dashboard({
-  className,
-  ...transactionData
-}: {
-  transactions: any[];
-  className?: string;
-}) {
+export default function DashboardTab({className, ...transactionData}: {
+transactions: any[];className?: string;}) {
   return (
     <div>
       <div className="w-full flex flex-row justify-center gap-4">

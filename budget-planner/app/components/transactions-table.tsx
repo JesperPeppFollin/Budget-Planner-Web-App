@@ -18,7 +18,7 @@ export default function TransactionsTable({
   transactions,
 }: TransactionsTableProps) {
   return (
-    <Table>
+    <Table className="border">
       <TableCaption>A list of your recent expenses.</TableCaption>
       <TableHeader>
         <TableRow>
