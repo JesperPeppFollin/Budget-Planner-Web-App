@@ -20,7 +20,7 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { TransactionDataType } from "~/backend/data-handler";
 
-export default function AddTransactionForm(transactionData: TransactionDataType) {
+export default function AddTransactionForm({ className, ...transactionData }: TransactionDataType & { className?: string }) {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
   const [transactionDate, setTransactionDate] = useState("");
@@ -48,7 +48,7 @@ export default function AddTransactionForm(transactionData: TransactionDataType)
   };
 
   return (
-    <Card className="w-full max-w-sm">
+    <Card className={`w-xl bg-transparent backdrop-blur ${className ?? ""}`}>
       <CardHeader>
         <CardTitle>Add a new transaction</CardTitle>
         <CardDescription>

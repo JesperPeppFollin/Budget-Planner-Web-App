@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import supabase from "./supabase-client";
+import { toast } from "sonner";
 
 export interface Transaction {
   id: string;
@@ -35,6 +36,7 @@ export function useTransactionData() {
       console.log("Error adding transaction", "error", error, "data", data);
     } else {
       setTransactions((prev) => [...prev, ...data]);
+      toast.success("Transaction added!");
     }
   };
 

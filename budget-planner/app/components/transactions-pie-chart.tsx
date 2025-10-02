@@ -75,7 +75,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 
-export function TransactionsPieChart() {
+export default function TransactionsPieChart() {
   return (
     <Card className="flex flex-col min-w-[400px]">
         {/* ändra denna för storleken på hela */}

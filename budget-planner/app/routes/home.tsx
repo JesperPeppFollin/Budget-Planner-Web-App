@@ -1,8 +1,13 @@
 import type { Route } from "./+types/home";
 import { useTransactionData } from "../backend/data-handler";
-import TransactionForm from "../components/add-transaction-form";
-import TransactionTable from "../components/transactions-table";
-import { TransactionsPieChart } from "~/components/transactions-pie-chart";
+import AddTransaction from "../tabs/add-transaction";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/tabs";
+import Dashboard from "../tabs/dashboard";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -15,19 +20,22 @@ export default function Home() {
   const transactionData = useTransactionData();
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <TransactionForm
-        transactions={transactionData.transactions}
-        addTransaction={transactionData.addTransaction}
-      />
-      <div className="flex flex-row justify-center items-center gap-100">
-        <div>
-          <TransactionsPieChart />
+    <Tabs defaultValue="dashboard">
+      <TabsList>
+        <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
+        <TabsTrigger value="add transaction">Add transaction</TabsTrigger>
+      </TabsList>
+      <TabsContent value="dashboard">
+        <Dashboard transactions={transactionData.transactions} />
+      </TabsContent>
+      <TabsContent value="add transaction">
+        <div className="flex justify-center">
+          <AddTransaction
+            transactions={transactionData.transactions}
+            addTransaction={transactionData.addTransaction}
+          />
         </div>
-        <div className="flex justify-center items-center my-10 min-w-[700px]">
-          <TransactionTable transactions={transactionData.transactions} />
-        </div>
-      </div>
-    </div>
+      </TabsContent>
+    </Tabs>
   );
 }
