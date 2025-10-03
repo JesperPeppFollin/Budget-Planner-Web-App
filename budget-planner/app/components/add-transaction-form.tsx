@@ -19,6 +19,7 @@ import {
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { TransactionDataType } from "~/backend/data-handler";
+import { categories_expenses } from "../backend/categories";
 
 export default function AddTransactionForm({ 
   transactionData, 
@@ -95,11 +96,11 @@ export default function AddTransactionForm({
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Categories</SelectLabel>
-                  <SelectItem value="groceries">Groceries</SelectItem>
-                  <SelectItem value="utilities">Utilities</SelectItem>
-                  <SelectItem value="entertainment">Entertainment</SelectItem>
-                  <SelectItem value="transportation">Transportation</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  {categories_expenses.map((category) => (
+                    <SelectItem key={category.id} value={category.name}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>

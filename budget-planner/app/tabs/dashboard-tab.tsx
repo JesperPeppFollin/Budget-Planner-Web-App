@@ -3,25 +3,31 @@ import TrendCard from "../components/summary cards/trend-card";
 import InfoCard from "../components/summary cards/info-card";
 import TransactionsPieChart from "../components/transactions-pie-chart";
 import TransactionTable from "../components/transactions-table";
+import type { TransactionDataType } from "../backend/data-handler";
 
-export default function DashboardTab({className, ...transactionData}: {
-  transactions: any[];
+export default function DashboardTab({
+  className,
+  transactionData
+}: {
+  transactionData: TransactionDataType;
   className?: string;
 }) {
 
+  const { transactions, budgets, addTransaction, totalExpenses, totalIncome, addBudgets, fetchBudgets } = transactionData;
+
   return (
+
+    
     <div>
       <div className="w-full flex flex-row justify-center gap-4">
-        <TrendCard title="income and expenses" amount={43} />
-        <BudgetCard amount={10} budget={100} />
-        <InfoCard title="Transactions" amount={50} />
+        <TrendCard title="total income" amount={totalIncome} trend={"up"} />
+        <TrendCard title="total expense" amount={totalExpenses} trend={"down"} />
+        <BudgetCard amount={totalExpenses} budget={budgets[10]} />
+        <InfoCard title="Transactions" amount={transactions.length} />
       </div>
       <div className="flex flex-row justify-center items-center gap-8">
         <div>
-          <TransactionsPieChart />
-        </div>
-        <div className="flex justify-center items-center my-10 min-w-[700px]">
-          <TransactionTable transactions={transactionData.transactions} />
+          <TransactionsPieChart transactionData={transactionData} />
         </div>
       </div>
     </div>

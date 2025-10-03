@@ -10,13 +10,12 @@ import {
 } from "../components/ui/table";
 import type { Transaction } from "~/backend/data-handler";
 
-interface TransactionsTableProps {
-  transactions: Transaction[];
-}
 
 export default function TransactionsTable({
   transactions,
-}: TransactionsTableProps) {
+}: {
+  transactions: Transaction[];
+}) {
   return (
     <Table className="border">
       <TableCaption>A list of your recent expenses.</TableCaption>

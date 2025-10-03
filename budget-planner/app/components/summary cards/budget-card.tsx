@@ -44,7 +44,7 @@ export default function BudgetCard({
   return (
     <BaseSummaryCard
       title={title}
-      amount={Math.abs(budget - amount)}
+      amount={Math.abs(budget - amount) + " kr"}
       icon={icon}
       iconColor={color}
       bgClass={bgClass}

@@ -30,7 +30,7 @@ export default function Home() {
         <TabsTrigger value="setBudget">Set Budget</TabsTrigger>
       </TabsList>
       <TabsContent value="dashboard">
-        <DashboardTab transactions={transactionData.transactions} />
+        <DashboardTab transactionData={transactionData} />
       </TabsContent>
       <TabsContent value="add transaction">
         <div className="flex justify-center">
@@ -41,7 +41,7 @@ export default function Home() {
       </TabsContent>
       <TabsContent value="transactions">
         <div className="flex justify-center">
-          <TransactionsTab transactions={transactionData.transactions} />
+          <TransactionsTab transactionData={transactionData} />
         </div>
       </TabsContent>
       <TabsContent value="setBudget">

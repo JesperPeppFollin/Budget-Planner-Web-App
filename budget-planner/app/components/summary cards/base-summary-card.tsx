@@ -4,7 +4,7 @@ import type { LucideIcon } from "lucide-react";
 
 interface BaseSummaryCardProps {
   title: string;
-  amount: number;
+  amount: string | number;
   icon: LucideIcon;
   iconColor: string;
   bgClass: string;
@@ -31,7 +31,6 @@ export function BaseSummaryCard({
       </CardHeader>
       <CardContent className="flex-1 flex flex-col justify-center">
         <div className={`flex flex-row items-center justify-start text-2xl font-bold ${iconColor}`}>
-          <DollarSign strokeWidth={3} className={` h-5 w-5 ${iconColor}`} />
           {amount}
         </div>
         <p className="text-xs text-muted-foreground">{footer}</p>
