@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import supabase from "./supabase-client";
-import type { get } from "http";
 
 export interface Transaction {
   id: string;
@@ -29,14 +28,6 @@ export default function useTransactionData() {
       console.log("Error fetching transactions");
     } else {
       setTransactions(data);
-      console.log("Fetched transactions:", data.length, "Sample:", data[0]);
-      console.log("Transaction categories:", [
-        ...new Set(data.map((t) => t.category)),
-      ]);
-      console.log(
-        "Expense transactions:",
-        data.filter((t) => t.is_expense).length
-      );
     }
   };
 
@@ -47,8 +38,10 @@ export default function useTransactionData() {
       .select();
     if (error || !data) {
       console.log("Error adding transaction", "error", error, "data", data);
+      return false;
     } else {
       setTransactions((prev) => [...prev, ...data]);
+      return true;
     }
   };
 

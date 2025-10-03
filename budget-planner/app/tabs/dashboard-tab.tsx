@@ -2,7 +2,6 @@ import BudgetCard from "../components/summary cards/budget-card";
 import TrendCard from "../components/summary cards/trend-card";
 import InfoCard from "../components/summary cards/info-card";
 import TransactionsPieChart from "../components/transactions-pie-chart";
-import TransactionTable from "../components/transactions-table";
 import type { TransactionDataType } from "../backend/data-handler";
 
 export default function DashboardTab({
@@ -13,7 +12,7 @@ export default function DashboardTab({
   className?: string;
 }) {
 
-  const { transactions, budgets, addTransaction, totalExpenses, totalIncome, addBudgets, fetchBudgets } = transactionData;
+  const { transactions, budgets, totalExpenses, totalIncome, } = transactionData;
 
   return (
 

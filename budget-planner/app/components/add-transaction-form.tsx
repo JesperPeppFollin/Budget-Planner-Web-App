@@ -20,6 +20,7 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { TransactionDataType } from "~/backend/data-handler";
 import { categories_expenses } from "../backend/categories";
+import { toast } from "sonner";
 
 export default function AddTransactionForm({ 
   transactionData, 
@@ -33,11 +34,11 @@ export default function AddTransactionForm({
   const [transactionDate, setTransactionDate] = useState("");
   const [category, setCategory] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     // Add the new transaction to supabase
-    transactionData.addTransaction({
+    const success = await transactionData.addTransaction({
       id: uuidv4(),
       name: name,
       amount: Number(amount),
@@ -46,6 +47,10 @@ export default function AddTransactionForm({
       category: String(category),
       is_expense: true,
     });
+
+    if (success) {
+      toast.success("Transaction added successfully");
+    }
 
     // Clear the form fields
     setName("");

@@ -32,11 +32,10 @@ export default function TransactionsPieChart({
 }) {
 
   const chartData = useMemo(() => {
-    console.log("Creating chartData, transactions:", transactionData.transactions.length);
     return categories_expenses.map((category, index) => ({
       category: category.name,
       amount: transactionData.expensesByCategory(category.name),
-      fill: `var(--color-chart-${index + 1})`,
+      fill: `var(--chart-${index + 1})`,
     }));
   }, [transactionData.transactions]);
 
@@ -44,42 +43,13 @@ export default function TransactionsPieChart({
     categories: {
       label: "Categories",
     },
-    [categories_expenses[0].name]: {
-      label: categories_expenses[0].name,
-      color: "var(--chart-1)",
-    },
-    [categories_expenses[1].name]: {
-      label: categories_expenses[1].name,
-      color: "var(--chart-2)",
-    },
-    [categories_expenses[2].name]: {
-      label: categories_expenses[2].name,
-      color: "var(--chart-3)",
-    },
-    [categories_expenses[3].name]: {
-      label: categories_expenses[3].name,
-      color: "var(--chart-4)",
-    },
-    [categories_expenses[4].name]: {
-      label: categories_expenses[4].name,
-      color: "var(--chart-5)",
-    },
-    [categories_expenses[5].name]: {
-      label: categories_expenses[5].name,
-      color: "var(--chart-6)",
-    },
-    [categories_expenses[6].name]: {
-      label: categories_expenses[6].name,
-      color: "var(--chart-7)",
-    },
-    [categories_expenses[7].name]: {
-      label: categories_expenses[7].name,
-      color: "var(--chart-8)",
-    },
-    [categories_expenses[8].name]: {
-      label: categories_expenses[8].name,
-      color: "var(--chart-9)",
-    },
+    ...categories_expenses.reduce((acc, category, index) => {
+      acc[category.name] = {
+        label: category.name,
+        color: `var(--chart-${index + 1})`,
+      };
+      return acc;
+    }, {} as Record<string, { label: string; color: string }>)
   }), []) satisfies ChartConfig;
 
   return (
