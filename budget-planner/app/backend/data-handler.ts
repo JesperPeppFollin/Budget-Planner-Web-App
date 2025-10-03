@@ -54,7 +54,6 @@ export default function useTransactionData() {
     .reduce((sum, t) => sum + t.amount, 0);
 
   const expensesByCategory = (category: string) => {
-    // Convert display category name to database category name
     const expenseTransactions = transactions.filter((t) => t.is_expense && t.category === category);
     const sum = expenseTransactions.reduce((sum, t) => sum + t.amount, 0);
     return sum;
