@@ -31,34 +31,6 @@ export default function useTransactionData() {
     }
   };
 
-  const addTransaction = async (transaction: Transaction) => {
-    const { data, error } = await supabase
-      .from("transactions")
-      .insert(transaction)
-      .select();
-    if (error || !data) {
-      console.log("Error adding transaction", "error", error, "data", data);
-      return false;
-    } else {
-      setTransactions((prev) => [...prev, ...data]);
-      return true;
-    }
-  };
-
-  const totalExpenses = transactions
-    .filter((t) => t.is_expense)
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const totalIncome = transactions
-    .filter((t) => !t.is_expense)
-    .reduce((sum, t) => sum + t.amount, 0);
-
-  const expensesByCategory = (category: string) => {
-    const expenseTransactions = transactions.filter((t) => t.is_expense && t.category === category);
-    const sum = expenseTransactions.reduce((sum, t) => sum + t.amount, 0);
-    return sum;
-  };
-
   const fetchBudgets = async () => {
     const { data, error } = await supabase.from("budget").select("*");
     if (error) {
@@ -73,6 +45,20 @@ export default function useTransactionData() {
     }
   };
 
+  const addTransaction = async (transaction: Transaction) => {
+    const { data, error } = await supabase
+      .from("transactions")
+      .insert(transaction)
+      .select();
+    if (error || !data) {
+      console.log("Error adding transaction", "error", error, "data", data);
+      return false;
+    } else {
+      setTransactions((prev) => [...prev, ...data]);
+      return true;
+    }
+  };
+
   const addBudgets = async (allBudgets: { [key: number]: number }) => {
     // Update all budgets in one loop using budget_id
     for (const [budget_id, amount] of Object.entries(allBudgets)) {
@@ -82,16 +68,49 @@ export default function useTransactionData() {
         .eq("budget_id", Number(budget_id));
     }
   };
+
+  const expensesSumByCategory = (input_transactions: Transaction[], category: string) => {
+    const expenseTransactions = input_transactions.filter(
+      (t) => t.is_expense && t.category === category
+    );
+    const sum = expenseTransactions.reduce((sum, t) => sum + t.amount, 0);
+    return sum;
+  };
+
+  const expensesByMonth = (month: number, year: number): Transaction[] => {
+    const monthStr = month.toString().padStart(2, "0"); // Convert 9 to "09"
+    const yearStr = year.toString();
+
+    return transactions.filter((transaction) => {
+      return transaction.transaction_date.startsWith(`${yearStr}-${monthStr}`) && transaction.is_expense;
+    });
+  };
+
+  const nbrTransactionsThisMonth = () => {
+    const current_month = new Date().getMonth() + 1;
+    const current_year = new Date().getFullYear();
+    return expensesByMonth(current_month, current_year).length;
+  };
+
+  const totalExpenses = transactions
+    .filter((t) => t.is_expense)
+    .reduce((sum, t) => sum + t.amount, 0);
+
+  const totalIncome = transactions
+    .filter((t) => !t.is_expense)
+    .reduce((sum, t) => sum + t.amount, 0);
+
   // no error handling, code and explode🙏🙏
 
   return {
     transactions,
     budgets,
-    totalExpenses,
-    totalIncome,
-    expensesByCategory,
     addTransaction,
     addBudgets,
-    fetchBudgets,
+    expensesSumByCategory,
+    expensesByMonth,
+    nbrTransactionsThisMonth,
+    totalExpenses,
+    totalIncome,
   };
 }

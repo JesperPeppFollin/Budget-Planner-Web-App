@@ -7,7 +7,11 @@ import { categories_expenses } from "../backend/categories";
 import { Button } from "~/components/ui/button";
 import type { TransactionDataType } from "~/backend/data-handler";
 
-export default function SetBudgetTab({ transactionData }: {transactionData: TransactionDataType;}) { 
+export default function SetBudgetTab({
+  transactionData,
+}: {
+  transactionData: TransactionDataType;
+}) {
   const [budgets, setBudgets] = useState<{ [key: number]: number }>({});
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
@@ -20,13 +24,13 @@ export default function SetBudgetTab({ transactionData }: {transactionData: Tran
 
   const handleSubmitBudget = () => {
     const totalBudget = Object.values(budgets).reduce((a, b) => a + b, 0);
-    
+
     // Combine individual budgets with total budget (budget_id: 10)
     const allBudgets = {
       ...budgets,
-      10: totalBudget  // Add total as budget_id 10
+      10: totalBudget, // Add total as budget_id 10
     };
-    
+
     transactionData.addBudgets(allBudgets);
   };
 
@@ -37,11 +41,6 @@ export default function SetBudgetTab({ transactionData }: {transactionData: Tran
   };
 
   const totalBudget = Object.values(budgets).reduce((a, b) => a + b, 0);
-
-  // useEffect(() => {
-  //   console.log(Object.values(budgets).reduce((a, b) => a + b, 0));
-  // }, [budgets]);
-  // använd för att testa att budgets uppdateras korrekt
 
   return (
     <div className="w-[700px]">
@@ -96,6 +95,40 @@ export default function SetBudgetTab({ transactionData }: {transactionData: Tran
             Save Budgets
           </Button>
         </CardFooter>
+      </Card>
+      <div className="flex items-center gap-4 my-6">
+        <div className="flex-1 border-t border-muted"></div>
+        <span className="text-sm text-muted-foreground font-medium">OR</span>
+        <div className="flex-1 border-t border-muted"></div>
+      </div>
+
+      <Card className="p-6 border-solid border-2 border-muted-foreground/25">
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
+            <TrendingUp className="h-6 w-6 text-muted-foreground" />
+          </div>
+          <div className="text-center space-y-2">
+            <h4 className="text-lg font-semibold">Import from CSV</h4>
+            <p className="text-sm text-muted-foreground max-w-sm">
+              Upload a CSV file with your budget data to quickly set up all
+              categories at once
+            </p>
+          </div>
+          <div className="relative">
+            <label
+              htmlFor="csv-upload"
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-dashed border-muted-foreground/50 bg-background hover:bg-accent hover:text-accent-foreground hover:border-solid h-10 px-4 py-2 cursor-pointer"
+            >
+              Choose CSV File
+            </label>
+            <Input
+              id="csv-upload"
+              type="file"
+              accept=".csv"
+              className="sr-only"
+            />
+          </div>
+        </div>
       </Card>
     </div>
   );

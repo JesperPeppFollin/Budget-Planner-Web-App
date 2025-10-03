@@ -24,33 +24,41 @@ import type { TransactionDataType } from "~/backend/data-handler";
 export const description = "A pie chart with a custom label";
 
 export default function TransactionsPieChart({
-  className,
-  transactionData
+  transactionData,
 }: {
   transactionData: TransactionDataType;
-  className?: string;
 }) {
+
+  const current_month = new Date().getMonth() + 1; // getMonth() returns 0-11
+  const current_year = new Date().getFullYear();
+  const transactionDataThisMonth = transactionData.expensesByMonth(current_month, current_year);
 
   const chartData = useMemo(() => {
     return categories_expenses.map((category, index) => ({
       category: category.name,
-      amount: transactionData.expensesByCategory(category.name),
+      amount: transactionData.expensesSumByCategory(transactionDataThisMonth, category.name),
       fill: `var(--chart-${index + 1})`,
     }));
   }, [transactionData.transactions]);
 
-  const chartConfig = useMemo(() => ({
-    categories: {
-      label: "Categories",
-    },
-    ...categories_expenses.reduce((acc, category, index) => {
-      acc[category.name] = {
-        label: category.name,
-        color: `var(--chart-${index + 1})`,
-      };
-      return acc;
-    }, {} as Record<string, { label: string; color: string }>)
-  }), []) satisfies ChartConfig;
+  const chartConfig = useMemo(
+    () => ({
+      categories: {
+        label: "Categories",
+      },
+      ...categories_expenses.reduce(
+        (acc, category, index) => {
+          acc[category.name] = {
+            label: category.name,
+            color: `var(--chart-${index + 1})`,
+          };
+          return acc;
+        },
+        {} as Record<string, { label: string; color: string }>
+      ),
+    }),
+    []
+  ) satisfies ChartConfig;
 
   return (
     <Card className="flex flex-col min-w-[400px]">

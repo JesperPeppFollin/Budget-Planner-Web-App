@@ -22,7 +22,7 @@ export default function DashboardTab({
         <TrendCard title="total income" amount={totalIncome} trend={"up"} />
         <TrendCard title="total expense" amount={totalExpenses} trend={"down"} />
         <BudgetCard amount={totalExpenses} budget={budgets[10]} />
-        <InfoCard title="Transactions" amount={transactions.length} />
+        <InfoCard title="Transactions" amount={transactionData.nbrTransactionsThisMonth()} />
       </div>
       <div className="flex flex-row justify-center items-center gap-8">
         <div>
