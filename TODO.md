@@ -5,6 +5,9 @@ Alla basic feature finns, man kan lägga in transaktion, lägga till budget, se 
 
 TODO
 Lägga in så man kan importera från CSV
+Lägga in funktioner för att se om enskilda budget är spräckt eller inte
 Lägga in (först utan AI, sen kanske med) så att den lägger in kategorier automatiskt
 Lägga in sp att endast denna månadens data finns i analytics
 Lägga in någon typ av historik (behöver inte va avancerat) så inte gamla månader försvinner (man kanske kan göra en funktion som delar upp alla transactioner i måndaer och lägger i en array, sedan kan analytics bara hämta från typ "latest_months_transactions_array")
+
+Just nu verkar inte dashboard uppdateras när ny budget läggs in om man inte reloadar sidan. dock gör pie chart de så kanske kan ta inspo från den
