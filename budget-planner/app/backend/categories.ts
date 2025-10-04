@@ -13,4 +13,5 @@ export const categories_expenses = [
 export const categories_income = [
   { id: 1, name: "CSN", color: "var(--chart-1)" },
   { id: 2, name: "Salary", color: "var(--chart-2)" },
+  { id: 3, name: "Other", color: "var(--chart-3)" },
 ];

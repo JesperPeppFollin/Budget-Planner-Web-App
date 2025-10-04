@@ -30,6 +30,7 @@ export default function TransactionsPieChart({
 }) {
 
   const current_month = new Date().getMonth() + 1; // getMonth() returns 0-11
+  const current_month_string = new Date().toLocaleString('default', { month: 'long' });
   const current_year = new Date().getFullYear();
   const transactionDataThisMonth = transactionData.expensesByMonth(current_month, current_year);
 
@@ -65,7 +66,7 @@ export default function TransactionsPieChart({
       {/* ändra denna för storleken på hela */}
       <CardHeader className="items-center pb-0">
         <CardTitle>Expenses per category</CardTitle>
-        <CardDescription>October 2025</CardDescription>
+        <CardDescription>{current_month_string} {current_year}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
@@ -102,10 +103,10 @@ export default function TransactionsPieChart({
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+          Keep spending baby <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
+          Showing total expenses for {current_month_string} {current_year}
         </div>
       </CardFooter>
     </Card>

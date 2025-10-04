@@ -32,7 +32,7 @@ export default function useTransactionData() {
   };
 
   const fetchBudgets = async () => {
-    const { data, error } = await supabase.from("budget").select("*");
+    const { data, error } = await supabase.from("expense_budgets").select("*");
     if (error) {
       console.log("Error fetching budgets", error);
     } else {
@@ -63,7 +63,7 @@ export default function useTransactionData() {
     // Update all budgets in one loop using budget_id
     for (const [budget_id, amount] of Object.entries(allBudgets)) {
       await supabase
-        .from("budget")
+        .from("expense_budgets")
         .update({ amount: amount })
         .eq("budget_id", Number(budget_id));
     }
