@@ -153,6 +153,8 @@ body {
   --bg-light: oklch(0.3 0 264);
   --text: oklch(0.96 0 0);
   --text-muted: oklch(0.76 0 0);
+  --border: hsl(0 0% 30%);
+  --highlight: hsl(0 0% 60%);
 
   /* shadows */
   --shadow-s:
