@@ -29,10 +29,16 @@ export default function TransactionsPieChart({
   transactionData: TransactionDataType;
 }) {
 
-  const current_month = new Date().getMonth() + 1; // getMonth() returns 0-11
-  const current_month_string = new Date().toLocaleString('default', { month: 'long' });
+
+  // DETTA ÄR NOG INTE BRA TROR DEM DEKLARARAS OM HELA TIDEN
+  // const current_month = new Date().getMonth() + 1; // getMonth() returns 0-11
+  // const current_month_string = new Date().toLocaleString('default', { month: 'long' });
+  const current_month = 9;
+  const current_month_string = "September";
   const current_year = new Date().getFullYear();
   const transactionDataThisMonth = transactionData.expensesByMonth(current_month, current_year);
+  transactionData.categorizeBankTransactions();
+
 
   const chartData = useMemo(() => {
     return categories_expenses.map((category, index) => ({

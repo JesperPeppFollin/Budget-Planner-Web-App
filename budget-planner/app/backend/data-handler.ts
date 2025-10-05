@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { category_expenses_identifiers } from "./categories";
 import supabase from "./supabase-client";
+import Papa from "papaparse";
 
 export interface Transaction {
   id: string;
@@ -69,7 +71,10 @@ export default function useTransactionData() {
     }
   };
 
-  const expensesSumByCategory = (input_transactions: Transaction[], category: string) => {
+  const expensesSumByCategory = (
+    input_transactions: Transaction[],
+    category: string
+  ) => {
     const expenseTransactions = input_transactions.filter(
       (t) => t.is_expense && t.category === category
     );
@@ -82,14 +87,15 @@ export default function useTransactionData() {
     const yearStr = year.toString();
 
     return transactions.filter((transaction) => {
-      return transaction.transaction_date.startsWith(`${yearStr}-${monthStr}`) && transaction.is_expense;
+      return (
+        transaction.transaction_date.startsWith(`${yearStr}-${monthStr}`) &&
+        transaction.is_expense
+      );
     });
   };
 
-  const nbrTransactionsThisMonth = () => {
-    const current_month = new Date().getMonth() + 1;
-    const current_year = new Date().getFullYear();
-    return expensesByMonth(current_month, current_year).length;
+  const nbrTransactionsForMonth = (month: number, year: number) => {
+    return expensesByMonth(month, year).length;
   };
 
   const totalExpenses = transactions
@@ -102,6 +108,93 @@ export default function useTransactionData() {
 
   // no error handling, code and explode🙏🙏
 
+  const handleCSV = async (file: File) => {
+    // Parse CSV in the browser
+    const text = await file.text();
+    const parsed = Papa.parse(text, { header: true, skipEmptyLines: true });
+
+    // Extract and map columns with all required fields
+    const mappedValues = parsed.data
+      .filter((row: any) => parseFloat(row.Belopp) < 0) // Only include negative amounts (expenses)
+      .map((row: any) => {
+        const mappedRow = {
+          id: crypto.randomUUID(), // Generate unique ID
+          created_at: new Date().toISOString(), // Current timestamp
+          name: row.Text || "Imported transaction", // Use Text column or default
+          amount: Math.round(Math.abs(parseFloat(row.Belopp))) || 0, // Convert to positive number
+          transaction_date: row.Valutadatum, // Use Valutadatum for date
+          category: "Other", // Default category
+          is_expense: true, // All imported transactions are expenses now
+        };
+
+        return mappedRow;
+      })
+      .filter((row) => row.transaction_date && !isNaN(row.amount)); // Filter out invalid rows
+
+    // Insert into Supabase
+    const { data, error } = await supabase
+      .from("transactions")
+      .insert(mappedValues)
+      .select(); // Add .select() to return the inserted data
+
+    if (data && !error) {
+      // Update local state with the inserted transactions
+      setTransactions((prev) => [...prev, ...data]);
+
+      // // Now categorize the newly added transactions
+      // categorizeBankTransactions();
+    }
+  };
+
+  // no error handling here either, code and explode🙏🙏
+
+  const categorizeBankTransactions = async () => {
+    // Get all transactions that need categorizing (currently "Other" category)
+    const uncategorizedTransactions = transactions.filter(
+      (t) => t.category === "Other"
+    );
+
+    // Process each transaction
+    for (const transaction of uncategorizedTransactions) {
+      let newCategory = "Other"; // Default fallback
+      const transactionText = transaction.name.toLowerCase();
+
+      // Check each category's keywords using your category_expenses_identifiers
+      for (const [categoryName, keywords] of Object.entries(
+        category_expenses_identifiers
+      )) {
+        // Check if any keyword matches
+        const hasMatch = keywords.some((keyword) =>
+          transactionText.includes(keyword.toLowerCase())
+        );
+
+        if (hasMatch) {
+          newCategory = categoryName; // Use the category name directly
+          break; // Stop at first match
+        }
+      }
+
+      // Update transaction in database if category changed
+      if (newCategory !== "Other") {
+        const { error } = await supabase
+          .from("transactions")
+          .update({ category: newCategory })
+          .eq("id", transaction.id);
+
+        if (!error) {
+          // Update local state
+          setTransactions((prev) =>
+            prev.map((t) =>
+              t.id === transaction.id ? { ...t, category: newCategory } : t
+            )
+          );
+        }
+      }
+    }
+
+    console.log("Categorization complete!");
+  };
+
   return {
     transactions,
     budgets,
@@ -109,8 +202,10 @@ export default function useTransactionData() {
     addBudgets,
     expensesSumByCategory,
     expensesByMonth,
-    nbrTransactionsThisMonth,
+    nbrTransactionsForMonth,
     totalExpenses,
     totalIncome,
+    handleCSV,
+    categorizeBankTransactions,
   };
 }

@@ -5,14 +5,12 @@ import TransactionsPieChart from "../components/transactions-pie-chart";
 import type { TransactionDataType } from "../backend/data-handler";
 
 export default function DashboardTab({
-  className,
   transactionData
 }: {
   transactionData: TransactionDataType;
-  className?: string;
 }) {
 
-  const { transactions, budgets, totalExpenses, totalIncome, } = transactionData;
+  const {budgets, totalExpenses, totalIncome, } = transactionData;
 
   return (
 
@@ -22,7 +20,7 @@ export default function DashboardTab({
         <TrendCard title="total income" amount={totalIncome} trend={"up"} />
         <TrendCard title="total expense" amount={totalExpenses} trend={"down"} />
         <BudgetCard amount={totalExpenses} budget={budgets[10]} />
-        <InfoCard title="Transactions" amount={transactionData.nbrTransactionsThisMonth()} />
+        <InfoCard title="Transactions" amount={transactionData.nbrTransactionsForMonth(9, 2025)} />
       </div>
       <div className="flex flex-row justify-center items-center gap-8">
         <div>

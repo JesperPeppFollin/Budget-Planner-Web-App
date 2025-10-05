@@ -3,7 +3,7 @@ export const categories_expenses = [
   { id: 2, name: "Dining out / Takeout", color: "var(--chart-2)" },
   { id: 3, name: "Alcohol", color: "var(--chart-3)" },
   { id: 4, name: "Rent and Utilities", color: "var(--chart-4)" },
-  { id: 5, name: "Transportation", color: "var(--chart-5)" },
+  { id: 5, name: "Subscriptions", color: "var(--chart-5)" },
   { id: 6, name: "Entertainment", color: "var(--chart-6)" },
   { id: 7, name: "Shopping", color: "var(--chart-7)" },
   { id: 8, name: "Savings", color: "var(--chart-8)" },
@@ -15,3 +15,15 @@ export const categories_income = [
   { id: 2, name: "Salary", color: "var(--chart-2)" },
   { id: 3, name: "Other", color: "var(--chart-3)" },
 ];
+
+
+export const category_expenses_identifiers = {
+  "Food (groceries)": ["ICA", "COOP", "WILLYS"],
+  "Dining out / Takeout": ["FOODORA", "GRONT O GOTT", "NOVA WOK I L", "PIZZERIA", "PRESSBYRAN", "RESTAURANG"],
+  "Alcohol": ["MORISKA", "SYSTEMBOLA", "MALMA  BREWI"],
+  "Rent and Utilities": ["46729620942", "ENKLA VARDAG", "FOLKTANDVÅRD"], // första numret är swish för hyra
+  "Transportation": ["UBER", "REGION SKÅNE", "BOLT", "VOI"],
+  "Subscriptions": ["SPOTIFY", "HALLON", "SOUNDCLOUD"],
+  "Shopping": [],
+  "Savings": [],
+}

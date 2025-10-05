@@ -62,49 +62,28 @@ export default function SetBudgetTab({
           )}
         </h3>
 
-        <div className="mb-8 flex justify-center">
-          <div className="flex rounded-lg p-1 bg-muted/20 w-4/5">
+        {/* --- INCOME / EXPENSE TOGGLE --- */}
+        <div>
+          <div className="flex items-center gap-2 mb-2">
             <input
               type="radio"
-              id="income-radio"
-              name="category-type"
-              value="Income"
-              checked={categoryChoice === "Income"}
-              onChange={(e) => setCategoryChoice(e.target.value)}
-              className="sr-only"
-            />
-            <label
-              htmlFor="income-radio"
-              className={`flex items-center justify-center gap-2 flex-1 py-3 rounded-md font-medium text-sm cursor-pointer transition-all duration-200 ${
-                categoryChoice === "Income"
-                  ? "bg-success text-white shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
-            >
-              <TrendingUp className="h-4 w-4" />
-              Income
-            </label>
-
-            <input
-              type="radio"
-              id="expense-radio"
-              name="category-type"
+              name="categories"
               value="Expense"
-              checked={categoryChoice === "Expense"}
+              id="expense"
+              defaultChecked={categoryChoice === "Expense"}
               onChange={(e) => setCategoryChoice(e.target.value)}
-              className="sr-only"
             />
-            <label
-              htmlFor="expense-radio"
-              className={`flex items-center justify-center gap-2 flex-1 py-3 rounded-md font-medium text-sm cursor-pointer transition-all duration-200 ${
-                categoryChoice === "Expense"
-                  ? "bg-destructive text-destructive-foreground shadow-sm"
-                  : "text-muted-foreground hover:text-foreground hover:bg-muted"
-              }`}
-            >
-              <TrendingDown className="h-4 w-4" />
-              Expense
-            </label>
+            <Label htmlFor="expense">Expense</Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="radio"
+              name="categories"
+              value="Income"
+              id="income"
+              onChange={(e) => setCategoryChoice(e.target.value)}
+            />
+            <Label htmlFor="income">Income</Label>
           </div>
         </div>
 
@@ -135,12 +114,6 @@ export default function SetBudgetTab({
           </Button>
         </CardFooter>
       </Card>
-      <div className="flex items-center gap-4 my-6">
-        <div className="flex-1 border-t border-muted"></div>
-        <span className="text-sm text-muted-foreground font-medium">OR</span>
-        <div className="flex-1 border-t border-muted"></div>
-      </div>
-      <CSVImportSection />
     </div>
   );
 }
@@ -247,39 +220,5 @@ function IncomeCategoriesSection({
         </div>
       ))}
     </div>
-  );
-}
-
-// ---CSV IMPORT HELPER COMPONENT ---
-function CSVImportSection() {
-  return (
-    <Card className="p-6 border-solid border-2 border-muted-foreground/25">
-      <div className="flex flex-col items-center justify-center space-y-4">
-        <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
-          <TrendingUp className="h-6 w-6 text-muted-foreground" />
-        </div>
-        <div className="text-center space-y-2">
-          <h4 className="text-lg font-semibold">Import from CSV</h4>
-          <p className="text-sm text-muted-foreground max-w-sm">
-            Upload a CSV file with your budget data to quickly set up all
-            categories at once
-          </p>
-        </div>
-        <div className="relative">
-          <label
-            htmlFor="csv-upload"
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 border border-dashed border-muted-foreground/50 bg-background hover:bg-accent hover:text-accent-foreground hover:border-solid h-10 px-4 py-2 cursor-pointer"
-          >
-            Choose CSV File
-          </label>
-          <Input
-            id="csv-upload"
-            type="file"
-            accept=".csv"
-            className="sr-only"
-          />
-        </div>
-      </div>
-    </Card>
   );
 }
