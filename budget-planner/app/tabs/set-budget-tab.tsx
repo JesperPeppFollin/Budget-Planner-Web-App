@@ -5,35 +5,41 @@ import { Label } from "../components/ui/label";
 import { Wallet, TrendingUp, TrendingDown } from "lucide-react";
 import { categories_expenses, categories_income } from "../backend/categories";
 import { Button } from "~/components/ui/button";
-import type { TransactionDataType } from "~/backend/data-handler";
+import { TransactionManager } from "../backend/transaction-manager";
+import { BudgetManager } from "../backend/budget-manager";
 
 export default function SetBudgetTab({
-  transactionData,
+  transactions,
+  budgets,
 }: {
-  transactionData: TransactionDataType;
+  transactions: TransactionManager;
+  budgets: BudgetManager;
 }) {
   // --- CONSTS AND FUNCTIONS ---
-  const [budgets, setBudgets] = useState<{ [key: number]: number }>({});
+  const [localBudgets, setLocalBudgets] = useState<{ [key: number]: number }>({});
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
   const [categoryChoice, setCategoryChoice] = useState("Expense");
 
   const handleBudgetChange = (categoryId: number, value: string) => {
-    setBudgets((prev) => ({
+    setLocalBudgets((prev) => ({
       ...prev,
       [categoryId]: Number(value),
     }));
   };
 
-  const handleSubmitBudget = () => {
-    const totalBudget = Object.values(budgets).reduce((a, b) => a + b, 0);
+  const handleSubmitBudget = async () => {
+    const totalBudget = Object.values(localBudgets).reduce((a, b) => a + b, 0);
 
-    // Combine individual budgets with total budget (budget_id: 10)
-    const allBudgets = {
-      ...budgets,
-      10: totalBudget, // Add total as budget_id 10
-    };
+    // Set individual budgets
+    Object.entries(localBudgets).forEach(([budgetId, amount]) => {
+      budgets.setBudget(Number(budgetId), amount);
+    });
 
-    transactionData.addBudgets(allBudgets);
+    // Set total budget (budget_id: 10)
+    budgets.setBudget(10, totalBudget);
+
+    // Save all budgets to database
+    await budgets.saveBudgets();
   };
 
   const goToNextField = (e: React.KeyboardEvent, idx: number) => {
@@ -42,7 +48,7 @@ export default function SetBudgetTab({
     }
   };
 
-  const totalBudget = Object.values(budgets).reduce((a, b) => a + b, 0);
+  const totalBudget = Object.values(localBudgets).reduce((a, b) => a + b, 0);
 
   // --- MAIN COMPONENT ---
   return (
@@ -91,14 +97,14 @@ export default function SetBudgetTab({
         {categoryChoice === "Expense" ? (
           <ExpenseCategoriesSection
             handleBudgetChange={handleBudgetChange}
-            budgets={budgets}
+            budgets={localBudgets}
             inputRefs={inputRefs}
             goToNextField={goToNextField}
           />
         ) : (
           <IncomeCategoriesSection
             handleBudgetChange={handleBudgetChange}
-            budgets={budgets}
+            budgets={localBudgets}
             inputRefs={inputRefs}
             goToNextField={goToNextField}
           />

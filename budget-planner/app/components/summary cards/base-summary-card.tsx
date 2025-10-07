@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { DollarSign } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
 interface BaseSummaryCardProps {
@@ -22,7 +21,7 @@ export function BaseSummaryCard({
   children,
 }: BaseSummaryCardProps) {
   return (
-    <Card className={`min-w-[350px] overflow-hidden flex flex-col ${bgClass}`}>
+    <Card className={`min-w-[250px] overflow-hidden flex flex-col ${bgClass}`}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium text-muted-foreground">
           {title}

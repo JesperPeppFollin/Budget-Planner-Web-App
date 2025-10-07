@@ -18,35 +18,36 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "../components/ui/chart";
-import { categories_expenses } from "../backend/categories";
-import type { TransactionDataType } from "~/backend/data-handler";
+import { categories_expenses, months } from "../backend/categories";
+import { TransactionManager } from "../backend/transaction-manager";
 
 export const description = "A pie chart with a custom label";
 
 export default function TransactionsPieChart({
-  transactionData,
+  transactionManager,
+  month,
+  year,
 }: {
-  transactionData: TransactionDataType;
+  transactionManager: TransactionManager;
+  month: number;
+  year: number;
 }) {
 
-
-  // DETTA ÄR NOG INTE BRA TROR DEM DEKLARARAS OM HELA TIDEN
-  // const current_month = new Date().getMonth() + 1; // getMonth() returns 0-11
-  // const current_month_string = new Date().toLocaleString('default', { month: 'long' });
-  const current_month = 9;
-  const current_month_string = "September";
-  const current_year = new Date().getFullYear();
-  const transactionDataThisMonth = transactionData.expensesByMonth(current_month, current_year);
-  transactionData.categorizeBankTransactions();
-
+  const current_month = month;
+  const current_month_string = months[month - 1];
+  const current_year = year;
+  
+  // Use the new TransactionManager methods - much cleaner!
+  const transactionDataThisMonth = transactionManager.getTransactionsForMonth(current_month, current_year);
+  transactionManager.categorizeBankTransactions();
 
   const chartData = useMemo(() => {
     return categories_expenses.map((category, index) => ({
       category: category.name,
-      amount: transactionData.expensesSumByCategory(transactionDataThisMonth, category.name),
+      amount: transactionManager.filterByMonth(current_month, current_year).filterByCategory(category.name).sumTransactions(),
       fill: `var(--chart-${index + 1})`,
     }));
-  }, [transactionData.transactions]);
+  }, [transactionManager, current_month, current_year]);
 
   const chartConfig = useMemo(
     () => ({

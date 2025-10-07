@@ -18,16 +18,19 @@ import {
 } from "./ui/select";
 import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-import type { TransactionDataType } from "~/backend/data-handler";
+import { TransactionManager } from "../backend/transaction-manager";
+import { BudgetManager } from "../backend/budget-manager";
 import { categories_expenses } from "../backend/categories";
 import { toast } from "sonner";
 import { TrendingUp } from "lucide-react";
 
 export default function AddTransactionForm({
-  transactionData,
+  transactions,
+  budgets,
   className,
 }: {
-  transactionData: TransactionDataType;
+  transactions: TransactionManager;
+  budgets: BudgetManager;
   className?: string;
 }) {
   const [name, setName] = useState("");
@@ -39,7 +42,7 @@ export default function AddTransactionForm({
     event.preventDefault();
 
     // Add the new transaction to supabase
-    const success = await transactionData.addTransaction({
+    const success = await transactions.addTransaction({
       id: uuidv4(),
       name: name,
       amount: Number(amount),
@@ -123,16 +126,16 @@ export default function AddTransactionForm({
         <span className="text-sm text-muted-foreground font-medium">OR</span>
         <div className="flex-1 border-t border-muted"></div>
       </div>
-      <CSVImportSection transactionData={transactionData} />
+      <CSVImportSection transactions={transactions} />
     </div>
   );
 }
 
 // ---CSV IMPORT HELPER COMPONENT ---
 function CSVImportSection({
-  transactionData,
+  transactions,
 }: {
-  transactionData: TransactionDataType;
+  transactions: TransactionManager;
 }) {
   return (
     <Card className="p-6 border-solid border-2 border-muted-foreground/25">
@@ -160,7 +163,7 @@ function CSVImportSection({
             accept=".csv"
             className="sr-only"
             onChange={async (e) => {
-              transactionData.handleCSV(e.target.files![0]);
+              transactions.handleCSV(e.target.files![0]);
             }}
           />
         </div>
