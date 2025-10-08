@@ -18,7 +18,7 @@ export default function TransactionsTable({
 }) {
   return (
     <div className="h-[600px] rounded-md border bg-background w-full shadow-sm">
-      <div className="relative max-h-[500px] overflow-auto">
+      <div className="relative max-h-[565px] overflow-auto">
         <Table>
           {/* Header */}
           <TableHeader className="border-b">

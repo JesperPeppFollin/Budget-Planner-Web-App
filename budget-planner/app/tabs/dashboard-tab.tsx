@@ -136,7 +136,7 @@ export default function DashboardTab({
       </div>
       <div className="flex flex-wrap w-[1500px] gap-4 mt-8">
         {categories_expenses.map((category) => (
-          <BudgetProgressInfo />
+          <BudgetProgressInfo key={category.id} name={category.name} />
         ))}
       </div>
     </div>
