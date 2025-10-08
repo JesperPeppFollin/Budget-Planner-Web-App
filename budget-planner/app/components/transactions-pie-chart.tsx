@@ -69,7 +69,7 @@ export default function TransactionsPieChart({
   ) satisfies ChartConfig;
 
   return (
-    <Card className="flex flex-col min-w-[400px]">
+    <Card className="flex flex-col min-w-[400px] h-[600px]">
       {/* ändra denna för storleken på hela */}
       <CardHeader className="items-center pb-0">
         <CardTitle>Expenses per category</CardTitle>

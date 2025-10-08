@@ -28,6 +28,12 @@ export const category_expenses_identifiers = {
   "Savings": [],
 }
 
+export const category_income_identifiers = {
+  "CSN": [""],
+  "Salary": ["", "", "", "46707225570"],
+  "Other": [],
+}
+
 export const months = [
   "January",
   "February",

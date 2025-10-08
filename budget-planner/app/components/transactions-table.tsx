@@ -17,7 +17,7 @@ export default function TransactionsTable({
   transactions: Transaction[];
 }) {
   return (
-    <div className="rounded-md border bg-background w-full">
+    <div className="h-[600px] rounded-md border bg-background w-full shadow-sm">
       <div className="relative max-h-[500px] overflow-auto">
         <Table>
           {/* Header */}

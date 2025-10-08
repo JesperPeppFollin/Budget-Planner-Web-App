@@ -8,7 +8,6 @@ import {
   Select,
   SelectContent,
   SelectItem,
-  SelectLabel,
   SelectGroup,
   SelectTrigger,
   SelectValue,
@@ -16,7 +15,9 @@ import {
 import { useState } from "react";
 import { Label } from "../components/ui/label";
 import TransactionsTable from "~/components/transactions-table";
-import { Calendar, CalendarDays, CalendarClock } from "lucide-react";
+import { Calendar, CalendarDays } from "lucide-react";
+import BudgetProgressInfo from "~/components/budget-progress-info";
+import { categories_expenses } from "~/backend/categories";
 
 export default function DashboardTab({
   transactions,
@@ -132,6 +133,11 @@ export default function DashboardTab({
         <div className="w-1000">
         <TransactionsTable transactions={transactions.filterByMonth(month, year).getAllTransactions()} />
         </div>
+      </div>
+      <div className="flex flex-wrap w-[1500px] gap-4 mt-8">
+        {categories_expenses.map((category) => (
+          <BudgetProgressInfo />
+        ))}
       </div>
     </div>
   );
