@@ -1,6 +1,7 @@
 import { category_expenses_identifiers } from "./categories";
 import supabase from "./supabase-client";
 import Papa from "papaparse";
+import { toast } from "sonner";
 
 export interface Transaction {
   id: string;
@@ -109,7 +110,7 @@ export class TransactionManager {
       .select();
     
     if (error || !data) {
-      console.log("Error adding transaction", "error", error, "data", data);
+      toast.error("Error adding transaction");
       return false;
     } else {
       this.transactions.push(...data);
@@ -137,25 +138,42 @@ export class TransactionManager {
             category: "Other", // Default category
             is_expense: true, // All imported transactions are expenses now
           };
-
           return mappedRow;
         })
         .filter((row) => row.transaction_date && !isNaN(row.amount)); // Filter out invalid rows
 
-      // Insert into Supabase
+      // Remove duplicates: check if a transaction with all the same data already exists
+      const existing = this.getAllTransactions();
+      const uniqueValues = mappedValues.filter(newTx => {
+        return !existing.some(existingTx =>
+          existingTx.name === newTx.name &&
+          existingTx.amount === newTx.amount &&
+          existingTx.transaction_date === newTx.transaction_date &&
+          existingTx.category === newTx.category &&
+          existingTx.is_expense === newTx.is_expense
+        );
+      });
+
+      if (uniqueValues.length === 0) {
+        // No new transactions to add
+        return true;
+      }
+
+      // Insert only unique transactions into Supabase
       const { data, error } = await supabase
         .from("transactions")
-        .insert(mappedValues)
+        .insert(uniqueValues)
         .select();
 
       if (data && !error) {
         // Update local state with the inserted transactions
         this.transactions.push(...data);
+        toast.success(`Imported ${data.length} new transactions`);
         return true;
       }
       return false;
     } catch (error) {
-      console.log("Error handling CSV", error);
+      toast.error("Error importing CSV");
       return false;
     }
   }
@@ -235,5 +253,32 @@ export class TransactionManager {
   // Get all transactions for a specific month (useful for pie charts)
   getTransactionsForMonth(month: string | number, year?: number): Transaction[] {
     return this.filterByMonth(month, year).filterExpenses().getAllTransactions();
+  }
+
+  // Get array of category sums for a specific month
+  getCategorySumsForMonth(month: string | number, year?: number): number[] {
+    const monthlyTransactions = this.filterByMonth(month, year).filterExpenses();
+    
+    // Get all unique categories from the transactions
+    const categories = Array.from(new Set(monthlyTransactions.getAllTransactions().map(t => t.category)));
+    
+    // Calculate sum for each category
+    return categories.map(category => 
+      monthlyTransactions.sumByCategory(category)
+    );
+  }
+
+  // Get array of category sums with category names for a specific month
+  getCategorySumsWithNamesForMonth(month: string | number, year?: number): { category: string, amount: number }[] {
+    const monthlyTransactions = this.filterByMonth(month, year).filterExpenses();
+    
+    // Get all unique categories from the transactions
+    const categories = Array.from(new Set(monthlyTransactions.getAllTransactions().map(t => t.category)));
+    
+    // Calculate sum for each category with names
+    return categories.map(category => ({
+      category,
+      amount: monthlyTransactions.sumByCategory(category)
+    }));
   }
 }

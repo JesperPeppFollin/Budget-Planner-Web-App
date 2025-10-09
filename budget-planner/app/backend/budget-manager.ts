@@ -1,4 +1,5 @@
 import supabase from "./supabase-client";
+import { toast } from "sonner";
 
 export interface Budget {
   budget_id: number;
@@ -55,16 +56,26 @@ export class BudgetManager {
   // Update all budgets in database
   async saveBudgets(): Promise<boolean> {
     try {
+      console.log("=== SAVING BUDGETS TO DATABASE ===");
+      console.log("Current budgets to save:", this.budgets);
+      
       // Update all budgets in one loop using budget_id
       for (const [budget_id, amount] of Object.entries(this.budgets)) {
-        await supabase
+        console.log(`Updating budget_id ${budget_id} with amount ${amount}`);
+        const { data, error } = await supabase
           .from("expense_budgets")
           .update({ amount: amount })
           .eq("budget_id", Number(budget_id));
+          
+        if (error) {
+          toast.error(`Error updating budget ${budget_id}`);
+        } else {
+        }
       }
+      toast.success("All budgets saved successfully");
       return true;
     } catch (error) {
-      console.log("Error saving budgets", error);
+      toast.error("Error saving budgets");
       return false;
     }
   }

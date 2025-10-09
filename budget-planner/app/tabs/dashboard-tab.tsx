@@ -18,6 +18,7 @@ import TransactionsTable from "~/components/transactions-table";
 import { Calendar, CalendarDays } from "lucide-react";
 import BudgetProgressInfo from "~/components/budget-progress-info";
 import { type Budget } from "~/backend/budget-manager";
+import { categories_expenses } from "~/backend/categories";
 
 export default function DashboardTab({
   transactions,
@@ -127,22 +128,31 @@ export default function DashboardTab({
 
       {/* Analytics per category */}
       <div className="flex flex-wrap w-[1500px] gap-4 mt-8">
-        {Object.values(transactions.filterByCategory).map((transaction: any) => {
-          const budget = budgets.getBudget(0);
-          console.log("transaction", transaction);
-          // Get all transactions for the selected month/year and this category
-          const spentPercentage = budget
-            ? (transaction / budget) * 100
-            : 0;
+        {transactions.getCategorySumsWithNamesForMonth(month, year)
+          .sort((a, b) => {
+            // Sort by category ID order
+            const categoryIdA = categories_expenses.find(cat => cat.name === a.category)?.id || 999;
+            const categoryIdB = categories_expenses.find(cat => cat.name === b.category)?.id || 999;
+            return categoryIdA - categoryIdB;
+          })
+          .map((transaction, index) => {
+          // Find the category ID from categories_expenses based on the category name
+          const categoryData = categories_expenses.find(cat => cat.name === transaction.category);
+          const categoryId = categoryData?.id;
+          
+          // Get budget using the actual category ID, not the array index
+          const budget = categoryId ? budgets.getBudget(categoryId) : 0;
+          
+          const spentPercentage = budget ? Math.min(Math.round((transaction.amount / budget) * 100), 100) : 0;
 
           return (
             <BudgetProgressInfo
-              key={transaction.id}
-              id={2}
+              key={transaction.category}
+              id={categoryId || index}
               budget_amount={budget}
               spent_amount={transaction.amount}
               spent_percentage={spentPercentage}
-              category_name={"dsa"}
+              category_name={transaction.category}
             />
           );
         })}

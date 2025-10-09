@@ -29,7 +29,6 @@ export default function SetBudgetTab({
 
   const handleSubmitBudget = async () => {
     const totalBudget = Object.values(localBudgets).reduce((a, b) => a + b, 0);
-
     // Set individual budgets
     Object.entries(localBudgets).forEach(([budgetId, amount]) => {
       budgets.setBudget(Number(budgetId), amount);

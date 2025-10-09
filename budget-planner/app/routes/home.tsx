@@ -4,7 +4,6 @@ import { BudgetManager } from "../backend/budget-manager";
 import { useState, useEffect, useRef } from "react";
 import {Tabs,TabsContent,TabsList,TabsTrigger} from "../components/ui/tabs";
 import AddTransactionTab from "../tabs/add-transaction-tab";
-import TransactionsTab from "../tabs/transactions-tab";
 import DashboardTab from "../tabs/dashboard-tab";
 import SetBudgetTab from "../tabs/set-budget-tab";
 import { Spinner } from "~/components/ui/spinner";
