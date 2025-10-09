@@ -64,7 +64,7 @@ export default function BudgetProgressInfo({
         <Progress value={spent_percentage} className={progressColor} />
         <div className="flex justify-end">
           {spent_percentage >= 100 ? (
-            <p className="text-red-600 font-bold text-xs">
+            <p className="text-destructive font-bold text-xs">
               OVER BUDGET
             </p>
           ) : (

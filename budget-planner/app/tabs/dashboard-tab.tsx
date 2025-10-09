@@ -17,7 +17,6 @@ import { Label } from "../components/ui/label";
 import TransactionsTable from "~/components/transactions-table";
 import { Calendar, CalendarDays } from "lucide-react";
 import BudgetProgressInfo from "~/components/budget-progress-info";
-import { type Budget } from "~/backend/budget-manager";
 import { categories_expenses } from "~/backend/categories";
 
 export default function DashboardTab({
@@ -48,7 +47,7 @@ export default function DashboardTab({
   const yearOptions = Array.from({ length: 7 }, (_, i) => currentYear - 3 + i);
 
   return (
-    <div className="w-full flex flex-col items-center">
+    <div className="w-full flex flex-col items-center mb-8">
       <div className="w-[1500px] flex flex-row justify-start items-start gap-4 mb-8">
         <div className="bg-card p-6 rounded-xl border shadow-sm min-w-[200px] min-h-[150px]">
           {/* Header with icon */}
@@ -128,34 +127,35 @@ export default function DashboardTab({
 
       {/* Analytics per category */}
       <div className="flex flex-wrap w-[1500px] gap-4 mt-8">
-        {transactions.getCategorySumsWithNamesForMonth(month, year)
-          .sort((a, b) => {
-            // Sort by category ID order
-            const categoryIdA = categories_expenses.find(cat => cat.name === a.category)?.id || 999;
-            const categoryIdB = categories_expenses.find(cat => cat.name === b.category)?.id || 999;
-            return categoryIdA - categoryIdB;
-          })
-          .map((transaction, index) => {
-          // Find the category ID from categories_expenses based on the category name
-          const categoryData = categories_expenses.find(cat => cat.name === transaction.category);
-          const categoryId = categoryData?.id;
+        {categories_expenses.map((category) => {
+          // Get the actual spending for this category in the selected month/year
+          const categorySum = transactions
+            .getCategorySumsWithNamesForMonth(month, year)
+            .find((sum) => sum.category === category.name);
           
-          // Get budget using the actual category ID, not the array index
-          const budget = categoryId ? budgets.getBudget(categoryId) : 0;
+          const actualAmount = categorySum ? categorySum.amount : 0;
+          const budget = budgets.getBudget(category.id);
           
-          const spentPercentage = budget ? Math.min(Math.round((transaction.amount / budget) * 100), 100) : 0;
+          console.log("categoryID", category.id);
+          console.log("budget", budget);
+          console.log("actual amount", actualAmount);
+          console.log("");
+
+          const spentPercentage = budget
+            ? Math.min(Math.round((actualAmount / budget) * 100), 100)
+            : 0;
 
           return (
-            <BudgetProgressInfo
-              key={transaction.category}
-              id={categoryId || index}
-              budget_amount={budget}
-              spent_amount={transaction.amount}
-              spent_percentage={spentPercentage}
-              category_name={transaction.category}
-            />
-          );
-        })}
+              <BudgetProgressInfo
+                key={category.name}
+                id={category.id}
+                budget_amount={budget}
+                spent_amount={actualAmount}
+                spent_percentage={spentPercentage}
+                category_name={category.name}
+              />
+            );
+          })}
       </div>
     </div>
   );
