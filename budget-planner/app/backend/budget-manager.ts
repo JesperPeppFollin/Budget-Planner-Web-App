@@ -6,7 +6,7 @@ export interface Budget {
 }
 
 export class BudgetManager {
-  private budgets: { [key: number]: number } = {};
+  budgets: { [key: number]: number } = {};
 
   constructor() {
     this.initialize();

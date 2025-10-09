@@ -1,25 +1,64 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardTitle,
-  CardDescription,
-  CardHeader,
-} from "./ui/card";
+import { Card } from "./ui/card";
 import { Progress } from "./ui/progress";
-import { Star } from "lucide-react";
+import {
+  Utensils,
+  Car,
+  Wine,
+  House,
+  Repeat,
+  Shirt,
+  PiggyBank,
+  Ellipsis,
+  ShoppingCart,
+} from "lucide-react";
 
-export default function BudgetProgressInfo(category: { name: string }) {
+const icon = [
+  <ShoppingCart />,
+  <Utensils />,
+  <Wine />,
+  <House />,
+  <Repeat />,
+  <Car />,
+  <Shirt />,
+  <PiggyBank />,
+  <Ellipsis />,
+];
+
+export default function BudgetProgressInfo({
+  id,
+  budget_amount,
+  spent_amount,
+  spent_percentage,
+  category_name,
+}: {
+  id: number;
+  budget_amount: number;
+  spent_amount: number;
+  spent_percentage: number;
+  category_name: string;
+}) {
   return (
-    <Card className="min-w-[350px] flex justify-center pl-4 pr-4">
-      <div className="flex flex-row justify-between items-center gap-2">
-        <CardTitle>{category.name}</CardTitle>
-        <Star />
+    <Card className="min-w-[350px] flex pl-4 pr-4 pt-2 pb-2">
+      <div className="flex justify-between items-center">
+        {icon[id]}
+        <div>
+          <p className="text-sm text-muted-foreground">Budget</p>
+          <p>{budget_amount}</p>
+        </div>
       </div>
-      <CardDescription className="w-[80%]">
-        <Progress value={50} />
-      </CardDescription>
-      <CardFooter className="text-sm">left of budget for this month</CardFooter>
+      <h1 className="text-lg font-bold">{category_name}</h1>
+      <div className="flex flex-col gap-2">
+        <div className="flex justify-between">
+          <p className="text-sm text-muted-foreground">Spent</p>
+          <p>{spent_amount}</p>
+        </div>
+        <Progress value={spent_percentage} />
+        <div className="flex justify-end">
+          <p className="text-xs text-muted-foreground">
+            {spent_percentage}% used
+          </p>
+        </div>
+      </div>
     </Card>
   );
 }

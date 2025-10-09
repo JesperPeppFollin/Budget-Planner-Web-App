@@ -203,8 +203,6 @@ export class TransactionManager {
         }
       }
     }
-
-    console.log("Categorization complete!");
   }
 
   // Helper method to convert month names to numbers

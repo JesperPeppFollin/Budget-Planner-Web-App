@@ -17,7 +17,7 @@ import { Label } from "../components/ui/label";
 import TransactionsTable from "~/components/transactions-table";
 import { Calendar, CalendarDays } from "lucide-react";
 import BudgetProgressInfo from "~/components/budget-progress-info";
-import { categories_expenses } from "~/backend/categories";
+import { type Budget } from "~/backend/budget-manager";
 
 export default function DashboardTab({
   transactions,
@@ -33,14 +33,14 @@ export default function DashboardTab({
     setMonth(parseInt(value));
   };
 
-  const onYearChange = (value: string) => {
-    setYear(parseInt(value));
-  };
-
   // Use the new class methods - much cleaner!
   const totalIncome = transactions.filterByMonth(month, year).getTotalIncome();
-  const totalExpenses = transactions.filterByMonth(month, year).getTotalExpenses();
-  const monthlyTransactionCount = transactions.filterByMonth(month, year).count();
+  const totalExpenses = transactions
+    .filterByMonth(month, year)
+    .getTotalExpenses();
+  const monthlyTransactionCount = transactions
+    .filterByMonth(month, year)
+    .count();
 
   // Generate year options (current year and a few years back/forward)
   const currentYear = new Date().getFullYear();
@@ -56,17 +56,21 @@ export default function DashboardTab({
               <Calendar className="w-6 h-6 text-muted-foreground" />
             </div>
             <div>
-              <h3 className="text-lg font-semibold text-foreground">Time frame</h3>
+              <h3 className="text-lg font-semibold text-foreground">
+                Time frame
+              </h3>
             </div>
           </div>
-          
-          {/* Month Dropdown */}
+
+          {/* Month Select */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="w-5 h-5 flex items-center justify-center">
                 <CalendarDays className="w-4 h-4 text-muted-foreground" />
               </div>
-              <Label className="text-base font-medium text-foreground">Select Month</Label>
+              <Label className="text-base font-medium text-foreground">
+                Select Month
+              </Label>
               <div className="ml-auto">
                 <Select value={month.toString()} onValueChange={onMonthChange}>
                   <SelectTrigger className="w-[120px] border-input bg-background">
@@ -91,34 +95,16 @@ export default function DashboardTab({
                 </Select>
               </div>
             </div>
-            
-            {/* Year Dropdown */}
-            {/* <div className="flex items-center gap-3">
-              <div className="w-5 h-5 flex items-center justify-center">
-                <CalendarClock className="w-4 h-4 text-muted-foreground" />
-              </div>
-              <Label className="text-base font-medium text-foreground">Select Year</Label>
-              <div className="ml-auto">
-                <Select value={year.toString()} onValueChange={onYearChange}>
-                  <SelectTrigger className="w-[120px] border-input bg-background">
-                    <SelectValue placeholder="Year" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      {yearOptions.map((yearOption) => (
-                        <SelectItem key={yearOption} value={yearOption.toString()}>
-                          {yearOption}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div> */}
           </div>
         </div>
+
+        {/* Analytics overall */}
         <TrendCard title="total income" amount={totalIncome} trend={"up"} />
-        <TrendCard title="total expense" amount={totalExpenses}trend={"down"}/>
+        <TrendCard
+          title="total expense"
+          amount={totalExpenses}
+          trend={"down"}
+        />
         <BudgetCard amount={totalExpenses} budget={budgets.getBudget(10)} />
         <InfoCard title="Transactions" amount={monthlyTransactionCount} />
       </div>
@@ -131,13 +117,35 @@ export default function DashboardTab({
           />
         </div>
         <div className="w-1000">
-        <TransactionsTable transactions={transactions.filterByMonth(month, year).getAllTransactions()} />
+          <TransactionsTable
+            transactions={transactions
+              .filterByMonth(month, year)
+              .getAllTransactions()}
+          />
         </div>
       </div>
+
+      {/* Analytics per category */}
       <div className="flex flex-wrap w-[1500px] gap-4 mt-8">
-        {categories_expenses.map((category) => (
-          <BudgetProgressInfo key={category.id} name={category.name} />
-        ))}
+        {Object.values(transactions.filterByCategory).map((transaction: any) => {
+          const budget = budgets.getBudget(0);
+          console.log("transaction", transaction);
+          // Get all transactions for the selected month/year and this category
+          const spentPercentage = budget
+            ? (transaction / budget) * 100
+            : 0;
+
+          return (
+            <BudgetProgressInfo
+              key={transaction.id}
+              id={2}
+              budget_amount={budget}
+              spent_amount={transaction.amount}
+              spent_percentage={spentPercentage}
+              category_name={"dsa"}
+            />
+          );
+        })}
       </div>
     </div>
   );
