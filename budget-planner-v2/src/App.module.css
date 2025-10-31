@@ -1,0 +1,6 @@
+
+
+.infoBoxesContainer{
+    display: flex;
+    gap: var(--spacing-5);
+}

@@ -1,0 +1,26 @@
+$variants: neutral, brand, success, error, warning, info;
+
+.#{$variants} {
+  transition: var(--time-transition);
+  border-radius: var(--border-radius);
+}
+
+@each $v in $variants {
+  .#{$v} {
+    background: var(--color-#{$v}-bg);
+    border: 1px solid var(--color-#{$v}-main);
+    color: var(--color-#{$v}-text); // dubelkolla om denna funkar
+
+    &:hover {
+      color: var(--color-#{$v}-main);
+    }
+  }
+}
+
+.neutral {
+  border: 1px solid var(--color-neutral-400);
+
+  &:hover {
+    background: var(--color-neutral-200);
+  }
+}

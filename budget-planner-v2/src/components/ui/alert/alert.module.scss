@@ -1,0 +1,23 @@
+$variants: info, success, warning, error, neutral;
+
+// general styling
+.#{$variants} {
+  border-radius: var(--border-radius);
+}
+
+// specific styling
+@each $v in $variants {
+  .#{$v} {
+    background: var(--color-#{$v}-bg);
+    border: 1px solid var(--color-#{$v}-border);
+    color: var(--color-#{$v}-main);
+
+    div[data-slot="alert-title"] {
+      color: var(--color-#{$v}-text);
+    }
+
+    div[data-slot="alert-description"] {
+      color: var(--color-#{$v}-muted);
+    }
+  }
+}
