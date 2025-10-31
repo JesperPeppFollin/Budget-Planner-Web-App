@@ -178,7 +178,7 @@ export class TransactionManager {
     }
   }
 
-  // Categorize bank transactions (same logic as before)
+  // Categorize bank transactions
   async categorizeBankTransactions(): Promise<void> {
     // Get all transactions that need categorizing (currently "Other" category)
     const uncategorizedTransactions = this.transactions.filter(

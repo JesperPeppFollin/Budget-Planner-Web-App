@@ -12,12 +12,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components/ui/select";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Label } from "../components/ui/label";
 import TransactionsTable from "~/components/transactions-table";
 import { Calendar, CalendarDays } from "lucide-react";
 import BudgetProgressInfo from "~/components/budget-progress-info";
 import { categories_expenses } from "~/backend/categories";
+import {
+  fetchTransactions,
+  categorizeTransactions,
+} from "../backend/categoriser-bot";
 
 export default function DashboardTab({
   transactions,
@@ -26,6 +30,26 @@ export default function DashboardTab({
   transactions: TransactionManager;
   budgets: BudgetManager;
 }) {
+  useEffect(() => {
+    const testCategorization = async () => {
+      try {
+        const uncategorizedTransactions = await fetchTransactions();
+        console.log("Fetched transactions:", uncategorizedTransactions);
+
+        if (uncategorizedTransactions.length > 0) {
+          const categorized = await categorizeTransactions(
+            uncategorizedTransactions
+          );
+          console.log("transactions_categorized_by_GPT", categorized);
+        }
+      } catch (error) {
+        console.error("Error in categorization process:", error);
+      }
+    };
+
+    testCategorization();
+  }, []);
+
   const [month, setMonth] = useState(new Date().getMonth() + 1); // Default to current month
   const [year, setYear] = useState(new Date().getFullYear()); // Default to current year
 
@@ -132,10 +156,10 @@ export default function DashboardTab({
           const categorySum = transactions
             .getCategorySumsWithNamesForMonth(month, year)
             .find((sum) => sum.category === category.name);
-          
+
           const actualAmount = categorySum ? categorySum.amount : 0;
           const budget = budgets.getBudget(category.id);
-          
+
           console.log("categoryID", category.id);
           console.log("budget", budget);
           console.log("actual amount", actualAmount);
@@ -146,16 +170,16 @@ export default function DashboardTab({
             : 0;
 
           return (
-              <BudgetProgressInfo
-                key={category.name}
-                id={category.id}
-                budget_amount={budget}
-                spent_amount={actualAmount}
-                spent_percentage={spentPercentage}
-                category_name={category.name}
-              />
-            );
-          })}
+            <BudgetProgressInfo
+              key={category.name}
+              id={category.id}
+              budget_amount={budget}
+              spent_amount={actualAmount}
+              spent_percentage={spentPercentage}
+              category_name={category.name}
+            />
+          );
+        })}
       </div>
     </div>
   );
