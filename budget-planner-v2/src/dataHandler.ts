@@ -35,10 +35,10 @@ function filterByIsExpense(transactions: Transaction[],isExpense: boolean): Tran
 }
 
 // get functions, accumulator functions that return a single value
-function getTotalAmount(transactions: Transaction[]): number {
+export function getTotalAmount(transactions: Transaction[]): number {
   return transactions.reduce((sum, t) => sum + t.amount, 0);
 }
 
-function getLength(transactions: Transaction[]): number {
+export function getLength(transactions: Transaction[]): number {
   return transactions.length;
 }

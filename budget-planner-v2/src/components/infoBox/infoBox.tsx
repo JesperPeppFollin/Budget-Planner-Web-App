@@ -6,6 +6,7 @@ import {
   CardTitle,
   CardDescription,
 } from "../ui/card/card";
+import { TrendingUp } from "lucide-react";
 import styles from "./infoBox.module.css";
 
 export default function InfoBox({
@@ -20,10 +21,10 @@ export default function InfoBox({
   return (
     <Card className={styles.mainContainer} variant={variant}>
       <CardHeader>
-        <CardTitle>{title}</CardTitle>
-        <CardDescription>for this month</CardDescription>
+        <CardTitle className={styles.title}>{title} <TrendingUp /></CardTitle>
+        <CardDescription className={styles.description}>for this month</CardDescription>
       </CardHeader>
-      <CardContent>{value}</CardContent>
+      <CardContent className={styles.content}>{value}</CardContent>
     </Card>
   );
 }

@@ -2,12 +2,11 @@ $variants: neutral, success, error, warning, info;
 
 .#{$variants} {
   border-radius: var(--border-radius);
+  background: var(--color-neutral-bg);
 }
 
 @each $v in $variants {
   .#{$v} {
-    background: var(--color-#{$v}-bg);
     border: 1px solid var(--color-#{$v}-border);
-    color: var(--color-#{$v}-main);
   }
 }

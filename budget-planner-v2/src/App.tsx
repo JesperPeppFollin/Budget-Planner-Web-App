@@ -1,30 +1,27 @@
 import { useState, useEffect } from "react";
 import type { Transaction, Category } from "./types";
 import styles from "./App.module.css";
-import {
-  fetchAllTransactions,
-  addTransactions,
-  deleteTransaction,
-} from "./fetchData";
-import {filter} from "./dataHandler";
+import {fetchAllTransactions,addTransactions,deleteTransaction,} from "./fetchData";
+import {filter, getTotalAmount ,getLength} from "./dataHandler";
 import AnalyticsPieChart from "./components/pieChart/pieChart";
 import BudgetTrackerBox from "./components/budgetTrackerBox/budgetTrackerBox";
 import InfoBox from "./components/infoBox/infoBox";
 import TransactionsTable from "./components/transactionsTable/transactionsTable";
+import CategoryIcon from "./components/ui/categoryIcon/categoryIcon";
 
 // TEST DATA
 const month = new Date().toLocaleString("default", { month: "long" });
 const year = new Date().getFullYear();
-// lägga till color?
+// lägga till color? icon?
 const categories: Category[] = [
-{ label: "Groceries", spent: 400, budget: 600 },
-{ label: "Transport", spent: 150, budget: 300 },
-{ label: "Takeout & Dining", spent: 200, budget: 400 },
-{ label: "Shopping", spent: 200, budget: 400 },
-{ label: "Entertainment & Fun", spent: 200, budget: 400 },
-{ label: "Rent & Utilities", spent: 200, budget: 400 },
-{ label: "Other", spent: 200, budget: 400 },
-{ label: "Savings", spent: 200, budget: 400 },
+{ label: "Groceries", transactions: 30, spent: 400, budget: 600 },
+{ label: "Transport", transactions: 20, spent: 150, budget: 400 },
+{ label: "Takeout & Dining", transactions: 25, spent: 380, budget: 400 },
+{ label: "Shopping", transactions: 15, spent: 50, budget: 400 },
+{ label: "Entertainment & Fun", transactions: 10, spent: 390, budget: 400 },
+{ label: "Rent & Utilities", transactions: 5, spent: 200, budget: 800 },
+{ label: "Other", transactions: 0, spent: 200, budget: 300 },
+{ label: "Savings", transactions: 0, spent: 210, budget: 200 },
 ];
 
 export default function App() {
@@ -66,7 +63,7 @@ export default function App() {
           <AnalyticsPieChart
             month={month}
             year={year}
-            categoriesSums={[400, 150, 200, 200, 200, 200, 200, 200]}
+            categoriesSums={categories.map(( cat) => cat.spent)}
           />
         </div>
         <div>
@@ -82,6 +79,7 @@ export default function App() {
               category={category.label}
               amountSpent={category.spent}
               budgetAmount={category.budget}
+              transactions={category.transactions}
             />
           </div>
         ))}

@@ -11,6 +11,7 @@ export type Transaction = {
 export interface Category { // kan detta va en type istället?
   label: string;
   spent: number;
+  transactions: number;
   budget: number;
 }
 
