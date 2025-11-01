@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import type { Transaction } from "./types";
+import styles from "./App.module.css";
 import {
   fetchAllTransactions,
   addTransactions,
   deleteTransaction,
 } from "./fetchData";
 import AnalyticsPieChart from "./components/pieChart/pieChart";
-import ExpenseTable from "./components/expenseTable/expenseTable";
 import BudgetTrackerBox from "./components/budgetTrackerBox/budgetTrackerBox";
 import InfoBox from "./components/infoBox/infoBox";
-import styles from "./App.module.css";
+import TransactionsTable from "./components/transactionsTable/transactionsTable";
 
 export default function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
@@ -26,22 +26,33 @@ export default function App() {
     loadTransactions();
   }, []);
 
-  const infoBoxData: { title: string; value: string; variant: "error" | "success" | "info" }[] = [
+  const infoBoxData: {
+    title: string;
+    value: string;
+    variant: "error" | "success" | "info" | "warning";
+  }[] = [
     { title: "Total Expenses", value: "$1200", variant: "error" },
     { title: "Total Income", value: "$3000", variant: "success" },
     { title: "Total Transactions", value: "52", variant: "info" },
+    { title: "Budget", value: "85% spent", variant: "warning" },
   ];
 
   const budgets = [
-    { category: "Food", amountSpent: 400, budgetAmount: 600 },
+    { category: "Groceries", amountSpent: 400, budgetAmount: 600 },
     { category: "Transport", amountSpent: 150, budgetAmount: 300 },
-    { category: "Entertainment", amountSpent: 200, budgetAmount: 400 },
+    { category: "Takeout & Dining", amountSpent: 200, budgetAmount: 400 },
+    { category: "Shopping", amountSpent: 200, budgetAmount: 400 },
+    { category: "Entertainment & Fun", amountSpent: 200, budgetAmount: 400 },
+    { category: "Rent & Utilities", amountSpent: 200, budgetAmount: 400 },
+    { category: "Other", amountSpent: 200, budgetAmount: 400 },
+    { category: "Saving", amountSpent: 200, budgetAmount: 400 },
   ];
 
   return (
     <div className={styles.mainContainer}>
+      {/* BASIC INFORMATION */}
       <div className={styles.infoBoxesContainer}>
-        {infoBoxData.map(data => (
+        {infoBoxData.map((data) => (
           <InfoBox
             key={data.title}
             title={data.title}
@@ -51,10 +62,32 @@ export default function App() {
           />
         ))}
       </div>
+
+      {/* ANALYTICS */}
       <div className={styles.analyticsContainer}>
-        <AnalyticsPieChart />
+        <div>
+          <AnalyticsPieChart />
+        </div>
+        <div>
+          <AnalyticsPieChart />
+        </div>
+        <div>
+          <TransactionsTable />
+        </div>
       </div>
-      <div className={styles.budgetsContainer}></div>
+
+      {/* CATEGORIES TRACKING */}
+      <div className={styles.budgetsContainer}>
+        {budgets.map((budget) => (
+          <div key={budget.category}>
+            <BudgetTrackerBox
+              category={budget.category}
+              amountSpent={budget.amountSpent}
+              budgetAmount={budget.budgetAmount}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

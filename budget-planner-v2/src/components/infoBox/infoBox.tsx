@@ -17,7 +17,7 @@ export default function InfoBox({
   title: string;
   value: string;
   footer: string;
-  variant: "error" | "success" | "info";
+  variant: "error" | "success" | "info" | "warning";
 }) {
   return (
     <Card className={styles.mainContainer} variant={variant}>

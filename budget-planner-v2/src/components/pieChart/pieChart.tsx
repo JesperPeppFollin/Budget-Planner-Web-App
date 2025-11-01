@@ -64,7 +64,7 @@ export default function AnalyticsPieChart() {
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square max-h-[250px] px-0"
+          className="mx-auto aspect-square px-0"
         >
           <PieChart>
             <ChartTooltip
