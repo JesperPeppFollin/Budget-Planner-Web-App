@@ -1,18 +1,35 @@
 import { useState, useEffect } from "react";
-import type { Transaction } from "./types";
+import type { Transaction, Category } from "./types";
 import styles from "./App.module.css";
 import {
   fetchAllTransactions,
   addTransactions,
   deleteTransaction,
 } from "./fetchData";
+import {filter} from "./dataHandler";
 import AnalyticsPieChart from "./components/pieChart/pieChart";
 import BudgetTrackerBox from "./components/budgetTrackerBox/budgetTrackerBox";
 import InfoBox from "./components/infoBox/infoBox";
 import TransactionsTable from "./components/transactionsTable/transactionsTable";
 
+// TEST DATA
+const month = new Date().toLocaleString("default", { month: "long" });
+const year = new Date().getFullYear();
+// lägga till color?
+const categories: Category[] = [
+{ label: "Groceries", spent: 400, budget: 600 },
+{ label: "Transport", spent: 150, budget: 300 },
+{ label: "Takeout & Dining", spent: 200, budget: 400 },
+{ label: "Shopping", spent: 200, budget: 400 },
+{ label: "Entertainment & Fun", spent: 200, budget: 400 },
+{ label: "Rent & Utilities", spent: 200, budget: 400 },
+{ label: "Other", spent: 200, budget: 400 },
+{ label: "Savings", spent: 200, budget: 400 },
+];
+
 export default function App() {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [budgets, setBudgets] = useState<number[]>([]);
 
   useEffect(() => {
     const loadTransactions = async () => {
@@ -26,50 +43,31 @@ export default function App() {
     loadTransactions();
   }, []);
 
-  const infoBoxData: {
-    title: string;
-    value: string;
-    variant: "error" | "success" | "info" | "warning";
-  }[] = [
-    { title: "Total Expenses", value: "$1200", variant: "error" },
-    { title: "Total Income", value: "$3000", variant: "success" },
-    { title: "Total Transactions", value: "52", variant: "info" },
-    { title: "Budget", value: "85% spent", variant: "warning" },
-  ];
-
-  const budgets = [
-    { category: "Groceries", amountSpent: 400, budgetAmount: 600 },
-    { category: "Transport", amountSpent: 150, budgetAmount: 300 },
-    { category: "Takeout & Dining", amountSpent: 200, budgetAmount: 400 },
-    { category: "Shopping", amountSpent: 200, budgetAmount: 400 },
-    { category: "Entertainment & Fun", amountSpent: 200, budgetAmount: 400 },
-    { category: "Rent & Utilities", amountSpent: 200, budgetAmount: 400 },
-    { category: "Other", amountSpent: 200, budgetAmount: 400 },
-    { category: "Saving", amountSpent: 200, budgetAmount: 400 },
-  ];
-
   return (
     <div className={styles.mainContainer}>
       {/* BASIC INFORMATION */}
       <div className={styles.infoBoxesContainer}>
-        {infoBoxData.map((data) => (
-          <InfoBox
-            key={data.title}
-            title={data.title}
-            value={data.value}
-            footer="for this month"
-            variant={data.variant}
-          />
-        ))}
+        <InfoBox title="Total Expense" value="1200" variant="error" />
+        <InfoBox title="Total Income" value="3000" variant="success" />
+        <InfoBox title="Total Transactions" value="52" variant="info" />
+        <InfoBox title="Budget Used" value="85% spent" variant="warning" />
       </div>
 
       {/* ANALYTICS */}
       <div className={styles.analyticsContainer}>
         <div>
-          <AnalyticsPieChart />
+          <AnalyticsPieChart
+            month={month}
+            year={year}
+            categoriesSums={categories.map(( cat) => cat.spent)}
+          />
         </div>
         <div>
-          <AnalyticsPieChart />
+          <AnalyticsPieChart
+            month={month}
+            year={year}
+            categoriesSums={[400, 150, 200, 200, 200, 200, 200, 200]}
+          />
         </div>
         <div>
           <TransactionsTable />
@@ -78,12 +76,12 @@ export default function App() {
 
       {/* CATEGORIES TRACKING */}
       <div className={styles.budgetsContainer}>
-        {budgets.map((budget) => (
-          <div key={budget.category}>
+        {categories.map(category => (
+          <div key={category.label}>
             <BudgetTrackerBox
-              category={budget.category}
-              amountSpent={budget.amountSpent}
-              budgetAmount={budget.budgetAmount}
+              category={category.label}
+              amountSpent={category.spent}
+              budgetAmount={category.budget}
             />
           </div>
         ))}

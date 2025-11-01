@@ -1,34 +1,44 @@
-import type { Transaction } from './types';
+import type { Transaction } from "./types";
 
+export function filter(transactions: Transaction[],year?: number,month?: number,category?: string,isExpense?: boolean): Transaction[] {
 
-
-// filtering functions, returns new array based on filtering criteria 
-export function filterByYear(transactions: Transaction[]): Transaction[]{
-    return [];
+    if (year !== undefined) {
+        transactions = filterByYear(transactions, year);
+    }
+    if (month !== undefined) {
+        transactions = filterByMonth(transactions, month);
+    }
+    if (category !== undefined) {
+        transactions = filterByCategory(transactions, category);
+    }
+    if (isExpense !== undefined) {
+        transactions = filterByIsExpense(transactions, isExpense);
+    }
+    return transactions;
 }
 
-export function filterByMonth(transactions: Transaction[]): Transaction[]{
-    return [];
+// filtering functions, returns new array based on filtering criteria
+function filterByYear(transactions: Transaction[], year: number): Transaction[] {
+  return transactions.filter(t => (parseInt(t.transaction_date.substring(0, 4)) === year));
 }
 
-export function filterByCateogory(transactions: Transaction[]): Transaction[]{
-    return [];
+function filterByMonth(transactions: Transaction[], month: number): Transaction[] {
+  return transactions.filter(t => (parseInt(t.transaction_date.substring(5, 7)) === month));
 }
 
-export function filterByIsExpense(transactions: Transaction[]): Transaction[]{
-    return [];
+function filterByCategory(transactions: Transaction[],category: string): Transaction[] {
+  return transactions.filter(t => (t.category === category));
 }
 
-export function filterByIsIncome(transactions: Transaction[]): Transaction[]{
-    return [];
+function filterByIsExpense(transactions: Transaction[],isExpense: boolean): Transaction[] {
+  return transactions.filter(t => (t.is_expense === isExpense));
 }
-
 
 // get functions, accumulator functions that return a single value
-export function getTotalSum(transactions: Transaction[]): number{
-    return 0;
+function getTotalAmount(transactions: Transaction[]): number {
+  return transactions.reduce((sum, t) => sum + t.amount, 0);
 }
 
-export function getLength(transactions: Transaction[]): number{
-    return transactions.length;
+function getLength(transactions: Transaction[]): number {
+  return transactions.length;
 }

@@ -31,6 +31,9 @@
 }
 
 @media (max-width: 1199px) {
+  .mainContainer{
+    margin: var(--spacing-2);
+  }
   .budgetsContainer > div {
     min-width: 100%;
   }

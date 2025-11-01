@@ -1,6 +1,5 @@
-"use client"
-import { TrendingUp } from "lucide-react"
-import { Pie, PieChart } from "recharts"
+"use client";
+import { Pie, PieChart } from "recharts";
 
 import {
   Card,
@@ -9,72 +8,64 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import{
+} from "@/components/ui/card";
+import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
-} from "@/components/ui/chart"
-import type { ChartConfig } from "@/components/ui/chart"
-import styles from "./pieChart.module.css"
+} from "@/components/ui/chart";
+import type { ChartConfig } from "@/components/ui/chart";
+import styles from "./pieChart.module.css";
 
-export const description = "A pie chart with a custom label"
+export const description = "A pie chart with a custom label";
 
-const chartData = [
-  { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
-  { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
-  { browser: "firefox", visitors: 187, fill: "var(--color-firefox)" },
-  { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
-  { browser: "other", visitors: 90, fill: "var(--color-other)" },
-]
+export default function AnalyticsPieChart({month, year, categoriesSums}: {month: string, year: number, categoriesSums: number[]}) {
+
+  const chartData = [
+  { browser: "groceries", amount: categoriesSums[0], fill: "var(--color-groceries)" },
+  { browser: "transport", amount: categoriesSums[1], fill: "var(--color-transport)" },
+  { browser: "takeoutAndDining", amount: categoriesSums[2], fill: "var(--color-takeoutAndDining)" },
+  { browser: "shopping", amount: categoriesSums[3], fill: "var(--color-shopping)" },
+  { browser: "entertainmentAndFun", amount: categoriesSums[4], fill: "var(--color-entertainmentAndFun)" },
+  { browser: "rentAndUtilities", amount: categoriesSums[5], fill: "var(--color-rentAndUtilities)" },
+  { browser: "other", amount: categoriesSums[6], fill: "var(--color-other)" },
+  { browser: "savings", amount: categoriesSums[7], fill: "var(--color-savings)" },
+];
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  chrome: {
-    label: "Chrome",
-    color: "var(--chart-1)",
-  },
-  safari: {
-    label: "Safari",
-    color: "var(--chart-2)",
-  },
-  firefox: {
-    label: "Firefox",
-    color: "var(--chart-3)",
-  },
-  edge: {
-    label: "Edge",
-    color: "var(--chart-4)",
-  },
-  other: {
-    label: "Other",
-    color: "var(--chart-5)",
-  },
-} satisfies ChartConfig
+  amount: { label: "category" },
+  groceries: { label: "Groceries", color: "var(--color-electric-violet-200)" },
+  transport: { label: "Transport", color: "var(--color-electric-violet-300)" },
+  takeoutAndDining: { label: "Takeout & Dining", color: "var(--color-electric-violet-400)" },
+  shopping: { label: "Shopping", color: "var(--color-electric-violet-500)"},
+  entertainmentAndFun: { label: "Entertainment & Fun", color: "var(--color-electric-violet-600)" },
+  rentAndUtilities: { label: "Rent & Utilities", color: "var(--color-electric-violet-700)"},
+  other: { label: "Other", color: "var(--color-electric-violet-800)" },
+  savings: { label: "Savings", color: "var(--color-electric-violet-900)" },
+} satisfies ChartConfig;
 
-export default function AnalyticsPieChart() {
   return (
     <Card className={styles.mainContainer}>
       <CardHeader className="items-center pb-0">
         <CardTitle>Pie Chart - Custom Label</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+        <CardDescription>{month} - {year}</CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square px-0"
+          className="mx-auto w-full max-w-[520px] px-0 overflow-visible"
         >
           <PieChart>
-            <ChartTooltip
-              content={<ChartTooltipContent nameKey="visitors" hideLabel />}
-            />
+            <ChartTooltip content={<ChartTooltipContent hideLabel />} />
             <Pie
               data={chartData}
-              dataKey="visitors"
+              dataKey="amount"
+              outerRadius="70%"
               labelLine={false}
               label={({ payload, ...props }) => {
+                // Show category name instead of amount
+                const key = payload.browser as keyof typeof chartConfig;
+                const text = chartConfig[key]?.label ?? payload.browser;
                 return (
                   <text
                     cx={props.cx}
@@ -84,10 +75,11 @@ export default function AnalyticsPieChart() {
                     textAnchor={props.textAnchor}
                     dominantBaseline={props.dominantBaseline}
                     fill="hsla(var(--foreground))"
+                    fontSize={12}
                   >
-                    {payload.visitors}
+                    {text}
                   </text>
-                )
+                );
               }}
               nameKey="browser"
             />
@@ -96,12 +88,11 @@ export default function AnalyticsPieChart() {
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
+          Showing total amount spent per category for {month}
         </div>
       </CardFooter>
     </Card>
-  )
+  );
 }

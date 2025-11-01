@@ -1,3 +1,8 @@
+.mainContainer{
+  /* height: var(--size-3); */
+}
+
+
 .tableContainer > div {
   height: var(--size-3);
   border: 1px solid var(--color-neutral-border);
@@ -9,12 +14,17 @@
 }
 
 
-.tableRow {
+.tableHeader {
   background-color: var(--color-neutral-bg);
   position: sticky;
   top: 0;
   /* border: 1px solid var(--color-neutral-border); */
   border-radius: var(--border-radius);
+}
+
+.tableRow{
+  background-color: var(--color-neutral-bg);
+
 }
 
 /* .caption{

@@ -13,6 +13,19 @@
   --color-neutral-muted: oklch(0.6 0 0);
   --color-neutral-border: oklch(0.809 0 0);
 
+  /* brand */
+  --color-electric-violet-50: #f3f1ff;
+  --color-electric-violet-100: #eae5ff;
+  --color-electric-violet-200: #d6cfff;
+  --color-electric-violet-300: #b9a8ff;
+  --color-electric-violet-400: #9877ff;
+  --color-electric-violet-500: #7940ff;
+  --color-electric-violet-600: #6a19ff;
+  --color-electric-violet-700: #6819fa;
+  --color-electric-violet-800: #4d06d1;
+  --color-electric-violet-900: #4107ab;
+  --color-electric-violet-950: #240075;
+
   /* Success */
   --color-success-bg: oklch(0.947 0.016 150);
   --color-success-main: oklch(0.623 0.155 150);
@@ -71,5 +84,4 @@
   --size-3: calc(var(--size-1) * 4);
   --size-4: calc(var(--size-1) * 8);
   --size-5: calc(var(--size-1) * 12);
-
 }
