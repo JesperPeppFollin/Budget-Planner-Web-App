@@ -1,6 +1,7 @@
 .mainContainer {
   border-color: var(--color-neutral-border);
   background-color: var(--color-neutral-bg);
+  min-width: var(--size-3);
 }
 
 .title{
@@ -8,12 +9,13 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  font-size: var(--font-size-h5);
+  font-size: var(--font-size-h6);
 }
 
 .infoContainer {
   display: flex;
   flex-direction: row;
+  font-size: var(--font-size-p);
 }
 
 .firstInfo {
@@ -31,14 +33,6 @@
   padding-left: var(--spacing-2);
 }
 
-.contentContainer {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-4);
-  margin-left: var(--spacing-2);
-  margin-right: var(--spacing-2);
-}
-
 .progressContainer {
   display: flex;
   flex-direction: column;
@@ -46,11 +40,11 @@
 }
 
 .progressContainer > h3{
-  font-size: var(--font-size-h3);
+  font-size: var(--font-size-h4);
 }
 
 .progressContainer > p{
   margin-bottom: var(--spacing-1);
-  font-size: var(--font-size-p);
+  font-size: var(--font-size-small);
   color: var(--color-neutral-muted);
 }

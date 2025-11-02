@@ -45,22 +45,27 @@ export default function BudgetTrackerBox({
         </CardTitle>
       </CardHeader>
 
-      <CardContent className={styles.contentContainer}>
+      <CardContent>
         <div className={styles.progressContainer}>
           <h3>
-            {(budgetAmount - amountSpent) > 0
+            {budgetAmount - amountSpent > 0
               ? `$${budgetAmount - amountSpent}`
-              : 'Over Budget'}
+              : "Over Budget"}
           </h3>
-          <p>{(budgetAmount - amountSpent) > 0
-              ? 'left of budget'
-              : `by $${amountSpent - budgetAmount}`}</p>
+          <p>
+            {budgetAmount - amountSpent > 0
+              ? "left of budget"
+              : `by $${amountSpent - budgetAmount}`}
+          </p>
           <Progress
             className={styles.progress}
             value={(amountSpent / budgetAmount) * 100}
             variant={getProgressVariant(amountSpent, budgetAmount)}
           />
         </div>
+      </CardContent>
+
+      <CardFooter>
         <div className={styles.infoContainer}>
           <div className={styles.firstInfo}>
             Budget: <b>${budgetAmount}</b>
@@ -72,9 +77,7 @@ export default function BudgetTrackerBox({
             Transactions: <b>{transactions}</b>
           </div>
         </div>
-      </CardContent>
-
-      <CardFooter></CardFooter>
+      </CardFooter>
     </Card>
   );
 }

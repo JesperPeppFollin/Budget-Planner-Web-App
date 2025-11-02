@@ -11,10 +11,15 @@
   display: flex;
   gap: var(--spacing-5);
   flex-wrap: wrap;
-
   > div {
     flex: 1;
   }
+}
+
+.budgetsContainer {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-5);
 }
 
 .infoBoxesContainer > div{
@@ -25,16 +30,8 @@
   min-width: var(--size-2);
 }
 
-
-.budgetsContainer > div {
-  min-width: 40%;
-}
-
 @media (max-width: 1199px) {
   .mainContainer{
     margin: var(--spacing-2);
-  }
-  .budgetsContainer > div {
-    min-width: 100%;
   }
 }
