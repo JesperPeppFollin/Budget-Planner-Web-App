@@ -1,8 +1,12 @@
 import { useState, useEffect } from "react";
 import type { Transaction, Category } from "./types";
 import styles from "./App.module.css";
-import {fetchAllTransactions,addTransactions,deleteTransaction,} from "./fetchData";
-import {filter, getTotalAmount ,getLength} from "./dataHandler";
+import {
+  fetchAllTransactions,
+  addTransactions,
+  deleteTransaction,
+} from "./fetchData";
+import { filter, getTotalAmount, getLength } from "./dataHandler";
 import AnalyticsPieChart from "./components/pieChart/pieChart";
 import BudgetTrackerBox from "./components/budgetTrackerBox/budgetTrackerBox";
 import InfoBox from "./components/infoBox/infoBox";
@@ -14,14 +18,14 @@ const month = new Date().toLocaleString("default", { month: "long" });
 const year = new Date().getFullYear();
 // lägga till color? icon?
 const categories: Category[] = [
-{ label: "Groceries", transactions: 30, spent: 400, budget: 600 },
-{ label: "Transport", transactions: 20, spent: 150, budget: 400 },
-{ label: "Takeout & Dining", transactions: 25, spent: 380, budget: 400 },
-{ label: "Shopping", transactions: 15, spent: 50, budget: 400 },
-{ label: "Entertainment & Fun", transactions: 10, spent: 390, budget: 400 },
-{ label: "Rent & Utilities", transactions: 5, spent: 200, budget: 800 },
-{ label: "Other", transactions: 0, spent: 200, budget: 300 },
-{ label: "Savings", transactions: 0, spent: 210, budget: 200 },
+  { label: "Groceries", transactions: 30, spent: 400, budget: 600 },
+  { label: "Transport", transactions: 20, spent: 150, budget: 400 },
+  { label: "Takeout & Dining", transactions: 25, spent: 380, budget: 400 },
+  { label: "Shopping", transactions: 15, spent: 50, budget: 400 },
+  { label: "Entertainment & Fun", transactions: 10, spent: 390, budget: 400 },
+  { label: "Rent & Utilities", transactions: 5, spent: 200, budget: 800 },
+  { label: "Other", transactions: 0, spent: 200, budget: 300 },
+  { label: "Savings", transactions: 0, spent: 210, budget: 200 },
 ];
 
 export default function App() {
@@ -44,10 +48,30 @@ export default function App() {
     <div className={styles.mainContainer}>
       {/* BASIC INFORMATION */}
       <div className={styles.infoBoxesContainer}>
-        <InfoBox title="Total Expense" value="1200" variant="error" />
-        <InfoBox title="Total Income" value="3000" variant="success" />
-        <InfoBox title="Total Transactions" value="52" variant="info" />
-        <InfoBox title="Budget Used" value="85% spent" variant="warning" />
+        <InfoBox
+          title="Total Expense"
+          value="1200"
+          variant="error"
+          footer="$ spent this month"
+        />
+        <InfoBox
+          title="Total Income"
+          value="3000"
+          variant="success"
+          footer="$ earned this month"
+        />
+        <InfoBox
+          title="Total Transactions"
+          value="52"
+          variant="info"
+          footer="transactions this month"
+        />
+        <InfoBox
+          title="Budget Used"
+          value="85"
+          variant="warning"
+          footer="% of budget used this month"
+        />
       </div>
 
       {/* ANALYTICS */}
@@ -56,14 +80,14 @@ export default function App() {
           <AnalyticsPieChart
             month={month}
             year={year}
-            categoriesSums={categories.map(( cat) => cat.spent)}
+            categoriesSums={categories.map((cat) => cat.spent)}
           />
         </div>
         <div>
           <AnalyticsPieChart
             month={month}
             year={year}
-            categoriesSums={categories.map(( cat) => cat.spent)}
+            categoriesSums={categories.map((cat) => cat.spent)}
           />
         </div>
         <div>
@@ -73,7 +97,7 @@ export default function App() {
 
       {/* CATEGORIES TRACKING */}
       <div className={styles.budgetsContainer}>
-        {categories.map(category => (
+        {categories.map((category) => (
           <div key={category.label}>
             <BudgetTrackerBox
               category={category.label}

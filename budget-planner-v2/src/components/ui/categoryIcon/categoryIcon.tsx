@@ -9,6 +9,10 @@ import {
   ShoppingCart,
   House,
   PiggyBank,
+  ArrowBigDown,
+  ArrowBigUp,
+  HandCoins,
+  Tally5,
 } from "lucide-react";
 import styles from "./categoryIcon.module.css";
 

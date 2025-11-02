@@ -34,14 +34,14 @@ export default function AnalyticsPieChart({month, year, categoriesSums}: {month:
 
 const chartConfig = {
   amount: { label: "category" },
-  groceries: { label: "Groceries", color: "var(--color-electric-violet-200)" },
-  transport: { label: "Transport", color: "var(--color-electric-violet-300)" },
-  takeoutAndDining: { label: "Takeout & Dining", color: "var(--color-electric-violet-400)" },
-  shopping: { label: "Shopping", color: "var(--color-electric-violet-500)"},
-  entertainmentAndFun: { label: "Entertainment & Fun", color: "var(--color-electric-violet-600)" },
-  rentAndUtilities: { label: "Rent & Utilities", color: "var(--color-electric-violet-700)"},
-  other: { label: "Other", color: "var(--color-electric-violet-800)" },
-  savings: { label: "Savings", color: "var(--color-electric-violet-900)" },
+  groceries: { label: "Groceries", color: "var(--color-main-200)" },
+  transport: { label: "Transport", color: "var(--color-main-300)" },
+  takeoutAndDining: { label: "Takeout & Dining", color: "var(--color-main-400)" },
+  shopping: { label: "Shopping", color: "var(--color-main-500)"},
+  entertainmentAndFun: { label: "Entertainment & Fun", color: "var(--color-main-600)" },
+  rentAndUtilities: { label: "Rent & Utilities", color: "var(--color-main-700)"},
+  other: { label: "Other", color: "var(--color-main-800)" },
+  savings: { label: "Savings", color: "var(--color-main-900)" },
 } satisfies ChartConfig;
 
   return (
