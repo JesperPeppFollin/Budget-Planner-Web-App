@@ -1,7 +1,8 @@
 .mainContainer {
   border-color: var(--color-neutral-border);
   background-color: var(--color-neutral-bg);
-  min-width: var(--size-3);
+  min-width: 500px;
+  max-width: var(--size-4);
 }
 
 .title{
@@ -15,6 +16,7 @@
 .infoContainer {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   font-size: var(--font-size-p);
 }
 
@@ -47,4 +49,12 @@
   margin-bottom: var(--spacing-1);
   font-size: var(--font-size-small);
   color: var(--color-neutral-muted);
+}
+
+
+
+@media (max-width: 500px) {
+  .mainContainer {
+    min-width: auto;
+  }
 }

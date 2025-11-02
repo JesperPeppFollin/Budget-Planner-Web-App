@@ -65,8 +65,7 @@ export default function BudgetTrackerBox({
         </div>
       </CardContent>
 
-      <CardFooter>
-        <div className={styles.infoContainer}>
+      <CardFooter className={styles.infoContainer}>
           <div className={styles.firstInfo}>
             Budget: <b>${budgetAmount}</b>
           </div>
@@ -76,7 +75,6 @@ export default function BudgetTrackerBox({
           <div className={styles.lastInfo}>
             Transactions: <b>{transactions}</b>
           </div>
-        </div>
       </CardFooter>
     </Card>
   );

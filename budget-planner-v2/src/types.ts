@@ -4,24 +4,22 @@ export type Transaction = {
   name: string;
   amount: number;
   transaction_date: string;
-  category: string;
+  category: string | null; // null if income
   is_expense: boolean;
 };
 
-export interface Category { // kan detta va en type istället?
-  label: string;
-  spent: number;
-  transactions: number;
-  budget: number;
-}
+export const categories = [
+  "Groceries",
+  "Transport",
+  "Dining & Takeout",
+  "Shopping",
+  "Entertainment & Fun",
+  "Rent & Utilities",
+  "Savings",
+  "Other",
+];
 
-// type CategoryKey =
-//   | "groceries"
-//   | "transport"
-//   | "takeoutAndDining"
-//   | "shopping"
-//   | "entertainmentAndFun"
-//   | "rentAndUtilities"
-//   | "other"
-//   | "savings";
-
+export type Budget = {
+  budget_label: string;
+  amount: number;
+};

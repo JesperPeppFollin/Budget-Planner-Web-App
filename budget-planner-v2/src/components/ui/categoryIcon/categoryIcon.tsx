@@ -21,7 +21,7 @@ export default function CategoryIcon({ category }: { category: string }) {
     let IconComponent;
 
     switch (category) {
-      case "groceries":
+      case "Groceries":
         IconComponent = ShoppingBasket;
         break;
       case "Transport":

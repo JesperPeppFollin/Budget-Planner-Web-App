@@ -1,0 +1,49 @@
+.mainContainer {
+  height: var(--spacing-5);
+  width: 316px;
+  /* border: 1px solid var(--color-neutral-border); */
+  border-radius: var(--border-radius);
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-1);
+  backdrop-filter: blur(10px);
+}
+
+.icon {
+  height: var(--spacing-2);
+  width: var(--spacing-2);
+  color: var(--color-main-950);
+}
+
+.button {
+  border: 1px solid var(--color-main-200);
+  background: var(--color-neutral-bg);
+  width: 48px; /* Set initial width */
+  transition: 0.2s ease-in-out; /* Specify which property */
+  padding-left: var(--spacing-4);
+  padding-right: var(--spacing-4);
+  cursor: pointer;
+}
+
+.button:hover {
+  width: 212px;
+  background: var(--color-neutral-bg);
+  opacity: 1;
+}
+
+.text {
+  opacity: 0;
+  width: 0;
+  font-size: var(--font-size-1);
+  color: var(--color-neutral-text);
+  transition: 0.2s ease-in-out; /* Specify which property */
+  font-size: var(--font-size-p);
+}
+
+.button:hover .text {
+  opacity: 1;
+  width: 212px;
+}
