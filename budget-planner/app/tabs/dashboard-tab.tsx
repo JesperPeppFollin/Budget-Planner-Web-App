@@ -51,7 +51,7 @@ export default function DashboardTab({
   }, []);
 
   const [month, setMonth] = useState(new Date().getMonth() + 1); // Default to current month
-  const [year, setYear] = useState(new Date().getFullYear()); // Default to current year
+  const [year, setYear] = useState(2025); // Default to year 2025
 
   const onMonthChange = (value: string) => {
     setMonth(parseInt(value));
